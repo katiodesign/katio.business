@@ -1,0 +1,8 @@
+import CredentialDetails from "@/components/credential-details";
+import ActionDialog from "@/components/action-dialog";
+import CredentialReveal from "@/components/credential-reveal";
+import {deleteCredential,updateCredential} from "@/lib/client-actions";
+export default function CredentialActions({credential,canReveal,canWrite,returnTo}:{credential:{id:string;service:string;username:string|null};canReveal:boolean;canWrite:boolean;returnTo:"client"|"subscription"}){
+ return <div className="form-actions credential-actions">{canReveal&&<><CredentialReveal id={credential.id}/><CredentialDetails id={credential.id}/></>}{canWrite&&<><ActionDialog variant="primary" label="Editar" title={`Editar credencial: ${credential.service}`}><form action={updateCredential.bind(null,credential.id)} className="stack"><input type="hidden" name="returnTo" value={returnTo}/><label>Servicio<input name="service" defaultValue={credential.service} required/></label><label>Usuario<input name="username" defaultValue={credential.username||""}/></label><label>Nuevo secreto (opcional)<input name="secret" type="password" autoComplete="new-password"/></label><button className="button primary">Guardar credencial</button></form></ActionDialog><ActionDialog variant="danger" label="Eliminar" title={`Eliminar credencial: ${credential.service}`}><p>La credencial dejará de estar disponible para el cliente y su contratación.</p><form action={deleteCredential.bind(null,credential.id)} className="stack"><input type="hidden" name="returnTo" value={returnTo}/><input type="hidden" name="confirm" value="DELETE"/><button className="button primary">Eliminar credencial</button></form></ActionDialog></>}</div>;
+}
+

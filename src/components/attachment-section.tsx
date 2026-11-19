@@ -1,0 +1,5 @@
+import { db } from "@/lib/db";
+import { uploadAttachment } from "@/lib/attachment-actions";
+import { date } from "@/lib/format";
+import type { EntityType } from "@/lib/attachments";
+export default async function AttachmentSection({type,id,canUpload}:{type:EntityType;id:string;canUpload:boolean}){const files=await db.attachment.findMany({where:{entityType:type,entityId:id},orderBy:{createdAt:"desc"}});const limit=process.env.MAX_ATTACHMENT_MB||"10";return <section className="card form-card" style={{marginTop:20}}><h2>Archivos adjuntos</h2>{files.map(file=><p key={file.id} className="line-item"><a href={`/api/archivos/${file.id}`}>{file.originalName}</a> · {date(file.createdAt)} · {Math.round(file.size/1024)} KB</p>)}{!files.length&&<p className="empty">Sin archivos adjuntos.</p>}{canUpload&&<form action={uploadAttachment.bind(null,type,id)} className="form-actions"><label>Agregar archivo (PDF o imagen, máximo {limit} MB)<input type="file" name="file" accept=".pdf,.png,.jpg,.jpeg,.webp" required/></label><button className="button secondary">Subir archivo</button></form>}</section>}

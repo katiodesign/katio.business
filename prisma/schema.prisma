@@ -1,0 +1,412 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+  importFileExtension = "ts"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum RoleName {
+  SUPER_ADMIN
+  ADMIN
+  USER
+}
+
+enum ContractType {
+  ONE_TIME
+  RECURRING
+}
+
+enum Periodicity {
+  MONTHLY
+  QUARTERLY
+  YEARLY
+}
+
+enum QuoteStatus {
+  DRAFT
+  SENT
+  ACCEPTED
+  REJECTED
+  EXPIRED
+}
+
+enum WorkStatus {
+  PENDING
+  IN_PROGRESS
+  SENT_TO_CLIENT
+  IN_CORRECTION
+  APPROVED
+  FINISHED
+}
+
+model User {
+  id             String     @id @default(cuid())
+  name           String
+  email          String     @unique
+  passwordHash   String
+  active         Boolean    @default(true)
+  sessionVersion Int        @default(0)
+  lastLoginAt    DateTime?
+  roles          UserRole[]
+  auditLogs      AuditLog[]
+  notificationReads NotificationRead[]
+  theme          String     @default("system")
+  passwordResets PasswordReset[]
+  sessions       AuthSession[]
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+}
+
+model PasswordReset {
+  id        String   @id @default(cuid())
+  tokenHash String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime @default(now())
+  @@index([userId, createdAt])
+}
+
+model AuthSession {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  revokedAt DateTime?
+  createdAt DateTime @default(now())
+  @@index([userId])
+}
+
+model Role {
+  id          String           @id @default(cuid())
+  name        RoleName         @unique
+  users       UserRole[]
+  permissions RolePermission[]
+}
+
+model Permission {
+  id    String           @id @default(cuid())
+  key   String           @unique
+  roles RolePermission[]
+}
+
+model UserRole {
+  userId String
+  roleId String
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role   Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  @@id([userId, roleId])
+}
+
+model RolePermission {
+  roleId       String
+  permissionId String
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+  @@id([roleId, permissionId])
+}
+
+model LoginAttempt {
+  key       String   @id
+  failures  Int      @default(0)
+  lockedUntil DateTime?
+  updatedAt DateTime @updatedAt
+}
+
+model Client {
+  id            String         @id @default(cuid())
+  name          String
+  identification String?       @unique
+  email         String?
+  phone         String?
+  address       String?
+  archivedAt    DateTime?
+  quotes        Quote[]
+  workItems     WorkItem[]
+  subscriptions Subscription[]
+  credentials   Credential[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
+model CatalogItem {
+  id           String       @id @default(cuid())
+  name         String
+  description  String       @default("")
+  category     String
+  contractType ContractType
+  periodicity  Periodicity?
+  price        Decimal      @db.Decimal(18, 2)
+  internalCost Decimal      @default(0) @db.Decimal(18, 2)
+  isBundle     Boolean      @default(false)
+  active       Boolean      @default(true)
+  components   CatalogBundleComponent[] @relation("Bundle")
+  includedIn   CatalogBundleComponent[] @relation("Component")
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+}
+
+model CatalogBundleComponent {
+  bundleId    String
+  componentId String
+  quantity    Decimal @db.Decimal(12, 2)
+  bundle      CatalogItem @relation("Bundle", fields: [bundleId], references: [id])
+  component   CatalogItem @relation("Component", fields: [componentId], references: [id])
+  @@id([bundleId, componentId])
+}
+
+model Quote {
+  id                 String       @id @default(cuid())
+  number             Int          @unique @default(autoincrement())
+  clientId           String?
+  client             Client?      @relation(fields: [clientId], references: [id])
+  customerName       String
+  businessName       String?
+  showBreakdown      Boolean      @default(false)
+  identification     String?
+  email              String?
+  phone              String?
+  address            String?
+  status             QuoteStatus  @default(DRAFT)
+  issuedAt           DateTime     @default(now())
+  expiresAt          DateTime?
+  multiplier         Decimal      @default(1) @db.Decimal(8, 4)
+  discountType       String       @default("FIXED")
+  discount           Decimal      @default(0) @db.Decimal(18, 2)
+  subtotal           Decimal      @db.Decimal(18, 2)
+  total              Decimal      @db.Decimal(18, 2)
+  observations       String       @default("")
+  terms              String       @default("")
+  paidAt             DateTime?
+  convertedAt        DateTime?
+  deletedAt          DateTime?
+  templateSnapshot   Json?
+  payment            QuotePayment?
+  lines              QuoteLine[]
+  invoice            Invoice?
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+  @@index([deletedAt, createdAt])
+}
+
+model QuotePayment {
+  id               String   @id @default(cuid())
+  quoteId          String   @unique
+  quote            Quote    @relation(fields: [quoteId], references: [id])
+  amount           Decimal  @db.Decimal(18, 2)
+  method           String
+  receiptReference String?
+  paidAt           DateTime @default(now())
+}
+
+model QuoteLine {
+  id           String       @id @default(cuid())
+  quoteId      String
+  quote        Quote        @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+  catalogId    String?
+  commercialComponents Json?
+  name         String
+  description  String       @default("")
+  contractType ContractType
+  periodicity  Periodicity?
+  quantity     Decimal      @db.Decimal(12, 2)
+  unitPrice    Decimal      @db.Decimal(18, 2)
+}
+
+model Invoice {
+  id               String       @id @default(cuid())
+  number           Int          @unique @default(autoincrement())
+  status           String       @default("ISSUED")
+  voidedAt         DateTime?
+  voidReason       String?
+  quoteId          String       @unique
+  quote            Quote        @relation(fields: [quoteId], references: [id])
+  customerSnapshot Json
+  templateSnapshot Json
+  total            Decimal      @db.Decimal(18, 2)
+  lines            InvoiceLine[]
+  createdAt        DateTime     @default(now())
+}
+
+model InvoiceLine {
+  id        String  @id @default(cuid())
+  invoiceId String
+  invoice   Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  snapshot  Json
+}
+
+model WorkItem {
+  id          String     @id @default(cuid())
+  sourceLineId String    @unique
+  clientId    String?
+  client      Client?    @relation(fields: [clientId], references: [id])
+  customerName String
+  name        String
+  description String     @default("")
+  status      WorkStatus @default(PENDING)
+  value       Decimal    @db.Decimal(18, 2)
+  startedAt   DateTime   @default(now())
+  dueAt       DateTime?
+  milestones  PaymentMilestone[]
+}
+
+model PaymentMilestone {
+  id         String   @id @default(cuid())
+  workItemId String
+  workItem   WorkItem @relation(fields: [workItemId], references: [id], onDelete: Cascade)
+  sequence   Int
+  amount     Decimal  @db.Decimal(18, 2)
+  paidAt     DateTime?
+  method     String?
+  receiptReference String?
+  @@unique([workItemId, sequence])
+}
+
+model Subscription {
+  id           String      @id @default(cuid())
+  sourceLineId String      @unique
+  clientId     String
+  client       Client      @relation(fields: [clientId], references: [id])
+  name         String
+  price        Decimal     @db.Decimal(18, 2)
+  periodicity  Periodicity
+  status       String      @default("PENDING_SETUP")
+  paymentStatus String     @default("PENDING")
+  startedAt    DateTime    @default(now())
+  nextDueAt    DateTime
+  events       SubscriptionEvent[]
+  tasks        ConfigurationTask[]
+  credentials  Credential[]
+}
+
+model SubscriptionEvent {
+  id             String @id @default(cuid())
+  subscriptionId String
+  subscription   Subscription @relation(fields: [subscriptionId], references: [id])
+  kind           String
+  data           Json?
+  createdAt      DateTime @default(now())
+}
+
+model ConfigurationTask {
+  id             String @id @default(cuid())
+  subscriptionId String
+  subscription   Subscription @relation(fields: [subscriptionId], references: [id])
+  name           String
+  status         String @default("PENDING")
+}
+
+model Credential {
+  id             String @id @default(cuid())
+  clientId       String
+  client         Client @relation(fields: [clientId], references: [id])
+  subscriptionId String?
+  subscription   Subscription? @relation(fields: [subscriptionId], references: [id])
+  service        String
+  username       String?
+  encryptedSecret String
+  encryptedDetails String?
+  createdAt      DateTime @default(now())
+}
+
+model OperatingExpense {
+  id          String @id @default(cuid())
+  name        String
+  category    String
+  amount      Decimal @db.Decimal(18, 2)
+  periodicity Periodicity?
+  paidAt      DateTime?
+  nextDueAt   DateTime?
+  active      Boolean @default(true)
+  deletedAt   DateTime?
+  createdAt   DateTime @default(now())
+  payments    ExpensePayment[]
+}
+
+model ExpensePayment {
+  id               String @id @default(cuid())
+  expenseId        String
+  expense          OperatingExpense @relation(fields: [expenseId], references: [id], onDelete: Cascade)
+  amount           Decimal @db.Decimal(18, 2)
+  paidAt           DateTime
+  method           String?
+  receiptReference String?
+  createdAt        DateTime @default(now())
+  @@index([expenseId, paidAt])
+}
+
+model DocumentTemplate {
+  id        String @id @default(cuid())
+  kind      String @unique
+  content   Json
+  updatedAt DateTime @updatedAt
+}
+
+model AppSetting {
+  key       String @id
+  value     Json
+  updatedAt DateTime @updatedAt
+}
+
+model PaymentMethod {
+  id        String   @id @default(cuid())
+  code      String   @unique
+  label     String
+  active    Boolean  @default(true)
+  sortOrder Int      @default(0)
+}
+
+model Attachment {
+  id           String @id @default(cuid())
+  entityType   String
+  entityId     String
+  originalName String
+  storageKey   String @unique
+  mimeType     String
+  size         Int
+  createdAt    DateTime @default(now())
+}
+
+model AuditLog {
+  id        String @id @default(cuid())
+  userId    String?
+  user      User? @relation(fields: [userId], references: [id])
+  action    String
+  entity    String
+  entityId  String?
+  metadata  Json?
+  createdAt DateTime @default(now())
+}
+
+model Notification {
+  id        String @id @default(cuid())
+  dedupeKey String @unique
+  title     String
+  readAt    DateTime?
+  resolvedAt DateTime?
+  createdAt DateTime @default(now())
+  reads     NotificationRead[]
+}
+
+model NotificationRead {
+  userId         String
+  notificationId String
+  user           User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  notification   Notification @relation(fields: [notificationId], references: [id], onDelete: Cascade)
+  readAt         DateTime @default(now())
+  @@id([userId, notificationId])
+}
+
+model BackupRecord {
+  id         String @id @default(cuid())
+  status     String
+  scope      String
+  storageKey String?
+  size       BigInt?
+  checksum   String?
+  createdAt  DateTime @default(now())
+}

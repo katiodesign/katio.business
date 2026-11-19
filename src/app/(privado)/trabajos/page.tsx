@@ -1,0 +1,25 @@
+import {statusColor} from "@/lib/status-color";
+import { PageHeader } from "@/components/app-chrome";
+import Link from "next/link";
+import FilterDialog from "@/components/filter-dialog";
+import { bogotaRange } from "@/lib/date-range";
+import { Search, Plus } from "lucide-react";
+import { db } from "@/lib/db";
+import { requirePermission } from "@/lib/access";
+import { canAccess } from "@/lib/permissions";
+import { cop,date } from "@/lib/format";
+import { workUrgency } from "@/lib/operations";
+import TablePager,{PAGE_SIZE,pageNumber} from "@/components/table-pager";
+import type {WorkStatus} from "@/generated/prisma/client";
+const labels={PENDING:"Pendiente",IN_PROGRESS:"En proceso",SENT_TO_CLIENT:"Enviado al cliente",IN_CORRECTION:"En corrección",APPROVED:"Aprobado",FINISHED:"Terminado"};
+export default async function Works({searchParams}:{searchParams:Promise<{q?:string;status?:string;filter?:string;page?:string;from?:string;to?:string;payment?:string}>}) {
+ const actor=await requirePermission("work.read"),roles=actor.roles.map(r=>r.role),params=await searchParams,q=(params.q||"").trim().slice(0,100),status=params.status&&params.status in labels?params.status as WorkStatus:undefined,filter=params.filter||"all",page=pageNumber(params.page),now=new Date();
+ const range=bogotaRange(params.from,params.to),payment=["unpaid","partial","paid"].includes(params.payment||"")?params.payment!:"";
+ const where={...(range?{dueAt:range}:{}),...(q?{OR:[{name:{contains:q,mode:"insensitive" as const}},{customerName:{contains:q,mode:"insensitive" as const}}]}:{})};
+ const all=await db.workItem.findMany({where,include:{milestones:true}});
+ all.sort((a,b)=>workUrgency(a.dueAt,a.status,now)-workUrgency(b.dueAt,b.status,now)||(a.dueAt?.getTime()??Infinity)-(b.dueAt?.getTime()??Infinity));
+ const matches=(w:typeof all[number],f:string)=>f==="pending"?w.status==="PENDING":f==="progress"?w.status==="IN_PROGRESS":f==="overdue"?workUrgency(w.dueAt,w.status,now)===0:f==="finished"?w.status==="FINISHED":true;
+ const filtered=all.filter(w=>{const paid=w.milestones.filter(m=>m.paidAt).length;return matches(w,filter)&&(!status||status===w.status)&&(!payment||(payment==="paid"?paid===2:payment==="partial"?paid===1:paid===0))}),rows=filtered.slice((page-1)*PAGE_SIZE,page*PAGE_SIZE);
+ const chips=[{key:"all",label:"Todos"},{key:"pending",label:"Pendientes"},{key:"progress",label:"En proceso"},{key:"overdue",label:"Vencidos"},{key:"finished",label:"Terminados"}];
+ return <><PageHeader><div><small>Inicio / Trabajos puntuales</small><h1>Trabajos puntuales</h1></div></PageHeader><div className="module-toolbar"><form><label className="module-search"><Search size={18} aria-hidden="true"/><span className="sr-only">Buscar</span><input name="q" defaultValue={q} placeholder="Buscar trabajo o cliente…"/></label>{Object.entries({status:status||"",filter,from:params.from||"",to:params.to||"",payment}).map(([key,value])=>value&&<input key={key} type="hidden" name={key} value={value}/>)}</form><FilterDialog base="/trabajos" preserved={{q,filter}} values={{status:status||"",from:params.from||"",to:params.to||"",payment}} fields={[{name:"status",label:"Estado del trabajo",options:Object.entries(labels).map(([value,label])=>({value,label}))},{name:"from",label:"Fecha inicial",type:"date"},{name:"to",label:"Fecha final",type:"date"},{name:"payment",label:"Estado del pago",options:[{value:"unpaid",label:"Pago pendiente"},{value:"partial",label:"50 % pagado"},{value:"paid",label:"Pagado"}]}]}/>{canAccess(roles,"work.update")&&<Link className="button primary toolbar-primary" href="/trabajos/nuevo"><Plus size={16}/>Nuevo trabajo</Link>}</div><nav className="filter-chips" aria-label="Filtros de trabajos">{chips.map(chip=><Link key={chip.key} className={`chip ${filter===chip.key?"active":""}`} href={`/trabajos?${new URLSearchParams({q,filter:chip.key,status:status||"",from:params.from||"",to:params.to||"",payment})}`}>{chip.label}<small>{all.filter(w=>matches(w,chip.key)).length}</small></Link>)}</nav><div className="card table-card work-table"><table><thead><tr><th>Trabajo / cliente</th><th>Estado operativo</th><th>Fecha límite</th><th>Valor acordado</th><th>Estado del pago</th></tr></thead><tbody>{rows.map(row=>{const n=row.milestones.filter(m=>m.paidAt).length,urgency=workUrgency(row.dueAt,row.status,now);return <tr key={row.id}><td><Link href={`/trabajos/${row.id}`}>{row.name}</Link><small>{row.customerName}</small></td><td><span className={`badge ${statusColor(row.status)}`}>{labels[row.status]}</span></td><td className={urgency===0?"error":""}>{row.dueAt?date(row.dueAt):"Sin fecha"}{urgency===0?" · vencido":urgency===1?" · hoy":""}</td><td>{cop(row.value.toString())}</td><td><span className={`badge ${n===2?"success":"warning"}`}>{n===2?"Pagado":n===1?"50 % pagado":"Pago pendiente"}</span></td></tr>})}</tbody></table>{!rows.length&&<p className="empty" style={{padding:24}}>No hay trabajos para estos filtros.</p>}<TablePager page={page} total={filtered.length} base="/trabajos" filters={{q,status:status||"",filter,from:params.from||"",to:params.to||"",payment}}/></div></>;
+}

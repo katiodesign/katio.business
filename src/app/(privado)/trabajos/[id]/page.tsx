@@ -1,0 +1,18 @@
+import { PageHeader } from "@/components/app-chrome";
+import { notFound } from "next/navigation";
+import Link from "next/link";
+import { db } from "@/lib/db";
+import { requirePermission } from "@/lib/access";
+import { canAccess } from "@/lib/permissions";
+import { cop,date } from "@/lib/format";
+import { bogotaDay } from "@/lib/operations";
+
+import {statusColor} from "@/lib/status-color";
+import { WorkActions } from "./work-actions";
+const states:Record<string,string>={PENDING:"Pendiente",IN_PROGRESS:"En proceso",SENT_TO_CLIENT:"Enviado al cliente",IN_CORRECTION:"En corrección",APPROVED:"Aprobado",FINISHED:"Terminado"};
+export default async function WorkDetail({params}:{params:Promise<{id:string}>}){
+ const actor=await requirePermission("work.read"),{id}=await params,roles=actor.roles.map(r=>r.role);
+ const [work,methods,history]=await Promise.all([db.workItem.findUnique({where:{id},include:{milestones:{orderBy:{sequence:"asc"}}}}),db.paymentMethod.findMany({where:{active:true},select:{id:true,code:true,label:true},orderBy:{sortOrder:"asc"}}),db.auditLog.findMany({where:{entity:"WorkItem",entityId:id},include:{user:{select:{name:true}}},orderBy:{createdAt:"desc"},take:100})]);
+ if(!work)notFound();const canEdit=canAccess(roles,"work.update"),canPay=canAccess(roles,"finance.create");
+ return <><PageHeader><div><small>Inicio / Trabajos puntuales / Detalle</small><h1>Trabajo puntual</h1></div></PageHeader><div className="page-title"><div><h2>{work.name}</h2><p>{work.customerName}</p></div><WorkActions work={{id,name:work.name,description:work.description,dueAt:work.dueAt?bogotaDay(work.dueAt):"",status:work.status}} milestones={work.milestones.map(m=>({sequence:m.sequence,amount:m.amount.toString(),paid:!!m.paidAt}))} methods={methods} canEdit={canEdit} canPay={canPay} today={bogotaDay(new Date())}/></div><div className="dashboard-grid"><div className="stack"><section className="card section-card"><h3>Resumen del trabajo</h3><div className="form-grid design-fields"><div><small className="muted">Cliente / prospecto</small><p>{work.customerName}</p></div><div><small className="muted">Estado operativo</small><p><span className={`badge ${statusColor(work.status)}`}>{states[work.status]}</span></p></div><div><small className="muted">Fecha límite</small><p>{work.dueAt?date(work.dueAt):"Sin fecha"}</p></div><div><small className="muted">Valor acordado</small><p>{cop(work.value.toString())}</p></div></div></section><section className="card section-card"><h3>Indicaciones del trabajo</h3><p style={{marginTop:12,whiteSpace:"pre-wrap"}}>{work.description||"Sin indicaciones registradas."}</p></section><section className="card section-card"><h3>Historial del trabajo</h3>{history.map(event=><p className="line-item" key={event.id}>{date(event.createdAt)} · {event.user?.name||"Sistema"} · {({CREATE:"Creación",STATUS:"Cambio de estado",UPDATE:"Edición",PAYMENT:"Pago"} as Record<string,string>)[event.action]||event.action}</p>)}{!history.length&&<p className="empty">Sin cambios registrados.</p>}</section></div><section className="card section-card"><h3>Pagos 50/50</h3>{work.milestones.map(m=><div className="line-item" key={m.id}><div className="split-row"><strong>Hito {m.sequence} · {cop(m.amount.toString())}</strong><span className={`badge ${m.paidAt?"success":"warning"}`}>{m.paidAt?"Pagado":"Pendiente"}</span></div><p className="muted" style={{marginTop:8}}>{m.paidAt?`${date(m.paidAt)} · ${m.method||"Método no registrado"}${m.receiptReference?` · ${m.receiptReference}`:""}`:"Pago aún no registrado"}</p></div>)}</section></div><p style={{marginTop:16}}><Link href="/trabajos">← Volver a trabajos</Link></p></>;
+}

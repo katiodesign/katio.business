@@ -1,0 +1,4 @@
+import Link from "next/link";
+export const PAGE_SIZE=25;
+export function pageNumber(value:string|undefined){const n=Number(value);return Number.isInteger(n)&&n>0?Math.min(n,10000):1}
+export default function TablePager({page,total,base,filters}:{page:number;total:number;base:string;filters?:Record<string,string>}){const last=Math.max(1,Math.ceil(total/PAGE_SIZE));const href=(target:number)=>`${base}?${new URLSearchParams({...filters,page:String(target)}).toString()}`;return <nav className="pager" aria-label="Páginas"><span>Mostrando {total?((page-1)*PAGE_SIZE+1):0}–{Math.min(page*PAGE_SIZE,total)} de {total}</span><div>{page>1&&<Link className="button secondary" href={href(page-1)}>Anterior</Link>}<span>Página {page} de {last}</span>{page<last&&<Link className="button secondary" href={href(page+1)}>Siguiente</Link>}</div></nav>}

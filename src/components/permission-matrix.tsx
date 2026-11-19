@@ -1,0 +1,13 @@
+"use client";
+import {useState} from "react";
+import {PERMISSIONS} from "@/lib/permissions";
+import {setRolePermissions} from "@/lib/settings-actions";
+const roleLabels={SUPER_ADMIN:"Superadministrador",ADMIN:"Administrador",USER:"Usuario"};
+const groups:Record<string,string>={dashboard:"Inicio",catalog:"Catálogo",clients:"Clientes",quotes:"Cotizaciones",invoices:"Facturación",finance:"Finanzas y pagos",work:"Trabajos puntuales",subscriptions:"Contrataciones",expenses:"Gastos operativos",credentials:"Credenciales",users:"Usuarios",settings:"Configuración",backups:"Respaldos",audit:"Auditoría"};
+const actions:Record<string,string>={read:"Consultar",create:"Crear",update:"Editar",delete:"Eliminar",export:"Exportar",write:"Guardar",reveal:"Revelar",manage:"Administrar"};
+type Role="SUPER_ADMIN"|"ADMIN"|"USER";
+export default function PermissionMatrix({values}:{values:{name:"ADMIN"|"USER";permissions:string[]}[]}){
+ const [role,setRole]=useState<Role>("USER"),[editing,setEditing]=useState(false);
+ const granted=new Set(values.find(r=>r.name===role)?.permissions||[]),critical=["users.manage","backups.manage","settings.manage"];
+ return <section className="card section-card" style={{marginTop:20}}><div className="split-row"><div><h2>Matriz de permisos</h2><p className="muted">Consulta los permisos por módulo y acción.</p></div>{role!=="SUPER_ADMIN"&&!editing&&<button type="button" className="button primary" onClick={()=>setEditing(true)}>Editar permisos</button>}</div><div className="filter-chips">{(["SUPER_ADMIN","ADMIN","USER"] as const).map(r=><button type="button" key={r} className={`chip ${role===r?"active":""}`} onClick={()=>{setRole(r);setEditing(false)}}>{roleLabels[r]}</button>)}</div><form action={setRolePermissions} key={role+String(editing)}><input type="hidden" name="role" value={role}/><div className="table-card"><table><thead><tr><th>Módulo</th><th>Acción</th><th>Permiso</th></tr></thead><tbody>{PERMISSIONS.filter(p=>role==="SUPER_ADMIN"||!critical.includes(p)).map(key=>{const [module,action]=key.split(".");const yes=role==="SUPER_ADMIN"||granted.has(key);return <tr key={key}><td>{groups[module]||module}</td><td>{actions[action]||action}</td><td>{editing?<label className="check-label"><input type="checkbox" name="permission" value={key} defaultChecked={yes} aria-label={key}/><span>{key}</span></label>:<span className={`badge ${yes?"success":""}`}>{yes?"Sí":"No"}</span>}</td></tr>})}</tbody></table></div>{editing&&<div className="form-actions"><button type="button" className="button secondary" onClick={()=>setEditing(false)}>Cancelar</button><button className="button primary">Guardar permisos</button></div>}</form></section>;
+}

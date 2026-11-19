@@ -1,0 +1,37 @@
+import DatePicker from "@/components/date-picker";
+import { PageHeader } from "@/components/app-chrome";
+import Link from "next/link";
+import Decimal from "decimal.js";
+import { ExternalLink } from "lucide-react";
+import {db} from "@/lib/db";
+import {requirePermission} from "@/lib/access";
+import {canAccess} from "@/lib/permissions";
+import {cop,date} from "@/lib/format";
+
+type Movement={id:string;document:string;customer:string;detail:string;amount:Decimal;paidAt:Date|null;method:string;receipt:string;href:string;dueAt:Date|null};
+export default async function Finance({searchParams}:{searchParams:Promise<{tab?:string;q?:string;from?:string;to?:string}>}){
+  const actor=await requirePermission("finance.read");const query=await searchParams;const tab=["resumen","pagos","historial","metodos"].includes(query.tab||"")?query.tab||"resumen":"resumen";
+  const [quotes,milestones,subscriptions,methods]=await Promise.all([
+    db.quotePayment.findMany({include:{quote:{include:{invoice:true,lines:true}}},orderBy:{paidAt:"desc"},take:500}),
+    db.paymentMilestone.findMany({include:{workItem:true},orderBy:{paidAt:"desc"},take:500}),
+    db.subscription.findMany({include:{client:true,events:true},take:500}),
+    db.paymentMethod.findMany({orderBy:{sortOrder:"asc"}}),
+  ]);
+  const sourceLines=new Set(quotes.flatMap(payment=>payment.quote.lines.filter(line=>line.contractType==="ONE_TIME").map(line=>line.id)));
+  const movements:Movement[]=[
+    ...quotes.map(payment=>({id:`q-${payment.id}`,document:payment.quote.invoice?`FAC-${String(payment.quote.invoice.number).padStart(4,"0")}`:`COT-${String(payment.quote.number).padStart(4,"0")}`,customer:payment.quote.customerName,detail:"Cobro inicial de cotización",amount:new Decimal(payment.amount.toString()),paidAt:payment.paidAt,method:payment.method,receipt:payment.receiptReference||"",href:`/cotizaciones/${payment.quoteId}`,dueAt:null})),
+    ...milestones.filter(m=>!(m.sequence===1&&sourceLines.has(m.workItem.sourceLineId))).map(m=>({id:`m-${m.id}`,document:`H-${m.sequence}`,customer:m.workItem.customerName,detail:`${m.workItem.name} · hito ${m.sequence} de 2`,amount:new Decimal(m.amount.toString()),paidAt:m.paidAt,method:m.method||"",receipt:m.receiptReference||"",href:`/trabajos/${m.workItemId}`,dueAt:m.workItem.dueAt})),
+    ...subscriptions.flatMap(s=>s.events.filter(e=>e.kind==="RENEWED").map(e=>{const value=(e.data&&typeof e.data==="object"&&!Array.isArray(e.data)?e.data:{}) as Record<string,unknown>;return {id:`s-${e.id}`,document:"RENOVACIÓN",customer:s.client.name,detail:s.name,amount:new Decimal(String(value.amount||s.price.toString())),paidAt:value.paidAt?new Date(`${value.paidAt}T12:00:00-05:00`):e.createdAt,method:String(value.method||""),receipt:String(value.receiptReference||""),href:`/contrataciones/${s.id}`,dueAt:null}})),
+    ...subscriptions.filter(s=>s.status!=="CANCELLED"&&(s.paymentStatus==="PENDING"||s.nextDueAt<=new Date())).map(s=>({id:`due-${s.id}`,document:"SUSCRIPCIÓN",customer:s.client.name,detail:s.name,amount:new Decimal(s.price.toString()),paidAt:null,method:"",receipt:"",href:`/contrataciones/${s.id}`,dueAt:s.nextDueAt})),
+  ];
+  const now=new Date(),monthStart=new Date(now.getFullYear(),now.getMonth(),1),monthEnd=new Date(now.getFullYear(),now.getMonth()+1,1);
+  const received=movements.filter(m=>m.paidAt&&m.paidAt>=monthStart&&m.paidAt<monthEnd).reduce((sum,m)=>sum.plus(m.amount),new Decimal(0));
+  const pending=movements.filter(m=>!m.paidAt).reduce((sum,m)=>sum.plus(m.amount),new Decimal(0));
+  const overdue=movements.filter(m=>!m.paidAt&&m.dueAt&&m.dueAt<now).reduce((sum,m)=>sum.plus(m.amount),new Decimal(0));
+  const partial=quotes.filter(q=>q.quote.lines.some(line=>line.contractType==="ONE_TIME"&&milestones.some(m=>m.workItem.sourceLineId===line.id&&m.sequence===2&&!m.paidAt))).length;
+  const needle=(query.q||"").trim().toLowerCase().slice(0,100);
+  const filtered=movements.filter(m=>(!needle||`${m.customer} ${m.document} ${m.detail}`.toLowerCase().includes(needle))&&(!query.from||!m.paidAt||m.paidAt>=new Date(`${query.from}T00:00:00-05:00`))&&(!query.to||!m.paidAt||m.paidAt<=new Date(`${query.to}T23:59:59-05:00`))&&(tab==="pagos"?!m.paidAt:tab==="historial"?!!m.paidAt:true)).sort((a,b)=>(b.paidAt||b.dueAt||new Date(0)).getTime()-(a.paidAt||a.dueAt||new Date(0)).getTime());
+  const tabs=[{id:"resumen",label:"Resumen"},{id:"pagos",label:"Pagos pendientes"},{id:"historial",label:"Historial"},{id:"metodos",label:"Métodos de pago"}];
+  return <><PageHeader><div><small>Inicio / Finanzas y pagos</small><h1>Finanzas y pagos</h1></div></PageHeader><div className="finance-topbar"><form className="finance-filters" action="/finanzas"><input type="hidden" name="tab" value={tab}/><label>Buscar<input name="q" defaultValue={query.q||""} placeholder="Cliente o documento"/></label><label>Desde<DatePicker type="date" name="from" defaultValue={query.from||""}/></label><label>Hasta<DatePicker type="date" name="to" defaultValue={query.to||""}/></label><button className="button secondary">Filtrar</button><Link className="button secondary" href={`/finanzas?tab=${tab}`}>Limpiar</Link></form><div className="form-actions">{canAccess(actor.roles.map(r=>r.role),"invoices.read")&&<Link className="button secondary" href="/facturacion"><ExternalLink size={16}/>Facturas y pagos</Link>}{canAccess(actor.roles.map(r=>r.role),"settings.manage")&&<Link className="button primary" href="/configuracion/metodos-pago"><ExternalLink size={16}/>Métodos de pago</Link>}</div></div><nav className="tabs" aria-label="Secciones de finanzas">{tabs.map(t=><Link key={t.id} href={`/finanzas?${new URLSearchParams({tab:t.id,q:query.q||"",from:query.from||"",to:query.to||""})}`} aria-current={tab===t.id?"page":undefined}>{t.label}</Link>)}</nav><div className="stat-grid">{[{label:"Pagos recibidos del mes",value:cop(received.toFixed(2))},{label:"Pendientes por recibir",value:cop(pending.toFixed(2))},{label:"Facturas con pago parcial",value:String(partial)},{label:"Saldos vencidos",value:cop(overdue.toFixed(2))}].map(card=><article className="card stat" key={card.label}><div>{card.label}</div><strong>{card.value}</strong><small>Cifra de gestión interna · COP</small></article>)}</div>
+  {tab==="metodos"?<section className="card form-card"><h2>Métodos de pago</h2>{methods.map(m=><p className="line-item" key={m.id}>{m.label} · {m.active?"Activo":"Inactivo"}</p>)}{canAccess(actor.roles.map(r=>r.role),"settings.manage")&&<Link className="button secondary" href="/configuracion/metodos-pago">Configurar métodos</Link>}</section>:<><div className="card table-card"><table><thead><tr><th>Documento</th><th>Cliente / hito</th><th>Fecha de pago</th><th>Método</th><th>Valor (COP)</th><th>Estado</th><th>Comprobante</th></tr></thead><tbody>{filtered.slice(0,100).map(m=><tr key={m.id}><td><Link href={m.href}>{m.document}</Link></td><td>{m.customer}<br/><small>{m.detail}</small></td><td>{m.paidAt?date(m.paidAt):"—"}</td><td>{methods.find(method=>method.code===m.method)?.label||m.method||"—"}</td><td>{cop(m.amount.toFixed(2))}</td><td><span className={`badge ${m.paidAt?"success":m.dueAt&&m.dueAt<now?"danger":"warning"}`}>{m.paidAt?"Pagado":m.dueAt&&m.dueAt<now?"Vencido":"Pendiente"}</span></td><td>{m.receipt||"—"}</td></tr>)}</tbody></table>{!filtered.length&&<p className="empty" style={{padding:24}}>No hay movimientos para estos filtros.</p>}{filtered.length>100&&<p className="muted" style={{padding:16}}>Se muestran los primeros 100 movimientos.</p>}</div></>}</>;
+}

@@ -1,0 +1,21 @@
+"use client";
+import {cop} from "@/lib/format";
+import DatePicker from "@/components/date-picker";
+import { useState } from "react";
+import { useFormStatus } from "react-dom";
+import { Modal } from "@/components/modal";
+import { recordMilestone, updateWorkStatus, updateWorkDetails } from "@/lib/operations-actions";
+type Method={id:string;code:string;label:string};
+type WorkInfo={id:string;name:string;description:string;dueAt:string;status:string};
+type Milestone={sequence:number;amount:string;paid:boolean};
+function Submit({label}:{label:string}){const {pending}=useFormStatus();return <button className="button primary" disabled={pending}>{pending?"Guardando…":label}</button>}
+export function WorkActions({work,milestones,methods,canEdit,canPay,today}:{work:WorkInfo;milestones:Milestone[];methods:Method[];canEdit:boolean;canPay:boolean;today:string}){
+ const [panel,setPanel]=useState<"edit"|"status"|"finish"|"payment"|null>(null);
+ const first=milestones.find(m=>m.sequence===1),second=milestones.find(m=>m.sequence===2),next=!first?.paid?first:!second?.paid?second:undefined;
+ return <><div className="form-actions" style={{marginTop:0}}>{canEdit&&<><button className="button secondary" onClick={()=>setPanel("edit")}>Editar trabajo</button><button className="button secondary" onClick={()=>setPanel("status")}>Cambiar estado</button>{work.status!=="FINISHED"&&<button className="button secondary" onClick={()=>setPanel("finish")}>Confirmar finalización</button>}</>}{canPay&&next&&<button className="button primary" onClick={()=>setPanel("payment")}>Registrar pago</button>}</div>
+ <Modal open={panel==="edit"} onClose={()=>setPanel(null)} title="Editar trabajo"><form action={updateWorkDetails.bind(null,work.id)} className="stack"><label>Nombre<input name="name" defaultValue={work.name} required/></label><label>Fecha límite<DatePicker type="date" name="dueAt" defaultValue={work.dueAt}/></label><label>Descripción e indicaciones<textarea name="description" defaultValue={work.description}/></label><div className="form-actions"><button type="button" className="button secondary" onClick={()=>setPanel(null)}>Cancelar</button><Submit label="Guardar cambios"/></div></form></Modal>
+ <Modal open={panel==="status"} onClose={()=>setPanel(null)} title="Cambiar estado"><form action={updateWorkStatus.bind(null,work.id)} className="stack"><label>Estado operativo<select name="status" defaultValue={work.status}><option value="PENDING">Pendiente</option><option value="IN_PROGRESS">En proceso</option><option value="SENT_TO_CLIENT">Enviado al cliente</option><option value="IN_CORRECTION">En corrección</option><option value="APPROVED">Aprobado</option></select></label><div className="form-actions"><button type="button" className="button secondary" onClick={()=>setPanel(null)}>Cancelar</button><Submit label="Guardar estado"/></div></form></Modal>
+ <Modal open={panel==="finish"} onClose={()=>setPanel(null)} title="Confirmar finalización"><p>Confirma que el trabajo fue entregado. El estado de los pagos se conserva.</p><form action={updateWorkStatus.bind(null,work.id)} className="form-actions" style={{marginTop:20}}><input type="hidden" name="status" value="FINISHED"/><button type="button" className="button secondary" onClick={()=>setPanel(null)}>Cancelar</button><Submit label="Marcar terminado"/></form></Modal>
+ <Modal open={panel==="payment"} onClose={()=>setPanel(null)} title={`Registrar ${next?.sequence===1?"primer":"segundo"} pago`} className="payment-dialog">{next&&<form action={recordMilestone.bind(null,work.id)} className="stack"><input type="hidden" name="sequence" value={next.sequence}/><label>Importe calculado<input value={cop(next.amount)} readOnly/></label><label>Fecha de pago<DatePicker type="date" name="paidAt" defaultValue={today} required/></label><label>Método de pago<select name="method" required defaultValue=""><option value="" disabled>Seleccionar método</option>{methods.map(m=><option key={m.id} value={m.code}>{m.label}</option>)}</select></label><label>Referencia del comprobante<input name="receiptReference" placeholder="Referencia opcional"/></label><div className="form-actions"><button type="button" className="button secondary" onClick={()=>setPanel(null)}>Cancelar</button><Submit label="Registrar pago"/></div></form>}</Modal></>;
+}
+

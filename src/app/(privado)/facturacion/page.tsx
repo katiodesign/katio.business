@@ -1,0 +1,24 @@
+import DismissibleNotice from "@/components/dismissible-notice";
+import { PageHeader } from "@/components/app-chrome";
+import Link from "next/link";
+import Decimal from "decimal.js";
+import { Download, ExternalLink } from "lucide-react";
+import { db } from "@/lib/db";
+import { requirePermission } from "@/lib/access";
+import { canAccess } from "@/lib/permissions";
+import { cop,date } from "@/lib/format";
+import TablePager,{PAGE_SIZE,pageNumber} from "@/components/table-pager";
+export default async function Invoices({searchParams}:{searchParams:Promise<{q?:string;payment?:string;page?:string}>}){
+ const actor=await requirePermission("invoices.read"),roles=actor.roles.map(r=>r.role),params=await searchParams,q=(params.q||"").trim().slice(0,100),payment=["pending","partial","paid"].includes(params.payment||"")?params.payment!:"",page=pageNumber(params.page),canFinance=canAccess(roles,"finance.read");
+ const number=/^(?:FAC-?|F-?)?0*(\d+)$/i.exec(q),where=q?{OR:[{quote:{customerName:{contains:q,mode:"insensitive" as const}}},...(number&&Number(number[1])<=2147483647?[{number:Number(number[1])}]:[])]}:{};
+ const invoices=await db.invoice.findMany({where,include:{quote:{include:{lines:true,payment:true}}},orderBy:{createdAt:"desc"}});
+ const lineIds=invoices.flatMap(i=>i.quote.lines.map(l=>l.id));
+ const works=canFinance&&lineIds.length?await db.workItem.findMany({where:{sourceLineId:{in:lineIds}},include:{milestones:true}}):[];
+ const paidByLine=new Map(works.map(w=>[w.sourceLineId,w.milestones.filter(m=>m.sequence===2&&m.paidAt).reduce((sum,m)=>sum.plus(m.amount.toString()),new Decimal(0))]));
+ const records=invoices.map(invoice=>{const paid=invoice.quote.lines.reduce((sum,line)=>sum.plus(paidByLine.get(line.id)||0),new Decimal(invoice.quote.payment?.amount.toString()||0));const kind=paid.lte(0)?"pending":paid.gte(invoice.total.toString())?"paid":"partial";return {invoice,kind}});
+ const filtered=payment?records.filter(r=>r.kind===payment):records,rows=filtered.slice((page-1)*PAGE_SIZE,page*PAGE_SIZE);
+ const filters=[{key:"",label:"Todas"},{key:"pending",label:"Pago pendiente"},{key:"partial",label:"Pago parcial (50 %)"},{key:"paid",label:"Pagadas"}];
+ return <><PageHeader><div><small>Inicio / Facturación</small><h1>Facturación</h1></div></PageHeader><div className="invoice-toolbar"><form className="invoice-search"><label><span className="sr-only">Buscar factura o cliente</span><input name="q" defaultValue={q} placeholder="Buscar factura o cliente…"/></label><button className="button secondary">Buscar</button></form>{canAccess(roles,"quotes.read")&&canAccess(roles,"invoices.create")&&<Link href="/cotizaciones?status=ACCEPTED" className="button primary"><ExternalLink size={16}/>Concretar cotización</Link>}</div><DismissibleNotice><strong>Aceptación y pago son eventos distintos</strong><p>Una cotización aceptada no se considera pagada. La factura conserva los datos de la cotización de origen. La facturación electrónica DIAN no está incluida en esta fase.</p></DismissibleNotice>{canFinance&&<nav className="filter-chips" aria-label="Estado del pago">{filters.map(f=><Link key={f.key} className={`chip ${payment===f.key?"active":""}`} href={`/facturacion?${new URLSearchParams({q,payment:f.key})}`}>{f.label}<small>{f.key?records.filter(r=>r.kind===f.key).length:records.length}</small></Link>)}</nav>}<div className="card table-card quote-table"><table aria-label="Facturas"><thead><tr><th>Consecutivo</th><th>Cliente</th><th>Fecha</th><th>Total</th><th>Documento</th>{canFinance&&<th>Pago</th>}<th>Acciones</th></tr></thead><tbody>{rows.map(({invoice,kind})=><tr key={invoice.id}><td><small>Consecutivo</small><Link href={`/facturacion/${invoice.id}`}>FAC-{String(invoice.number).padStart(4,"0")}</Link></td><td><small>Cliente / prospecto</small><div className="quote-customer"><span className="avatar">{invoice.quote.customerName.trim().split(/\s+/).slice(0,2).map(p=>p[0]).join("").toUpperCase()}</span><span>{invoice.quote.customerName}<small>Desde COT-{String(invoice.quote.number).padStart(4,"0")}</small></span></div></td><td><small>Fecha</small>{date(invoice.createdAt)}</td><td><small>Total (COP)</small>{cop(invoice.total.toString())}</td><td><small>Estado del documento</small><span className={`badge ${invoice.status==="VOID"?"danger":"info"}`}>{invoice.status==="VOID"?"Anulada":"Emitida"}</span></td>{canFinance&&<td><small>Estado del pago</small><span className={`badge ${kind==="paid"?"success":"warning"}`}>{kind==="paid"?"Pagada":kind==="partial"?"Pago parcial":"Pago pendiente"}</span></td>}<td><small>Acciones</small><a href={`/api/facturacion/${invoice.id}/pdf`} className="row-icon" aria-label="Descargar PDF" title="Descargar PDF"><Download size={20}/></a></td></tr>)}</tbody></table>{!rows.length&&<p className="empty" style={{padding:24}}>No hay facturas para estos filtros.</p>}<TablePager page={page} total={filtered.length} base="/facturacion" filters={{q,payment}}/></div></>;
+}
+
+
