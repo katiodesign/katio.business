@@ -7,6 +7,19 @@ import { canAccess } from "@/lib/permissions";
 import { catalogSchema } from "@/lib/schemas";
 
 const idSchema = z.cuid();
+export async function deleteCatalogItem(itemId:string,form:FormData){
+ const actor=await requirePermission("catalog.update"),id=idSchema.parse(itemId);
+ if(form.get("confirm")!=="DELETE")throw new Error("Confirma la eliminación del elemento.");
+ await db.$transaction(async tx=>{
+  const item=await tx.catalogItem.findUniqueOrThrow({where:{id},select:{name:true}});
+  const [quotes,bundles]=await Promise.all([tx.quoteLine.count({where:{catalogId:id}}),tx.catalogBundleComponent.count({where:{componentId:id}})]);
+  if(quotes||bundles)throw new Error("Este elemento está vinculado a cotizaciones o productos compuestos. Puedes desactivarlo para conservar el historial.");
+  await tx.catalogBundleComponent.deleteMany({where:{bundleId:id}});
+  await tx.catalogItem.delete({where:{id}});
+  await tx.auditLog.create({data:{userId:actor.id,action:"DELETE",entity:"CatalogItem",entityId:id,metadata:{name:item.name}}});
+ });
+ redirect("/catalogo");
+}
 export async function updateCatalogItem(itemId: string, form: FormData) {
   const actor = await requirePermission("catalog.update"); const id = idSchema.parse(itemId);
   const raw = Object.fromEntries(form); const canSeeCost = canAccess(actor.roles.map(r=>r.role),"finance.read");

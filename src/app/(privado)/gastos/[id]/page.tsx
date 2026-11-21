@@ -1,3 +1,4 @@
+import CategoryInput from "@/components/category-input";
 import MoneyInput from "@/components/money-input";
 import DatePicker from "@/components/date-picker";
 import { PageHeader } from "@/components/app-chrome";
@@ -30,7 +31,7 @@ export default async function ExpenseDetail({ params }: { params: Promise<{ id: 
     <div className="page-title"><div><h2>{expense.name}</h2><p>Gastos operativos / Detalle</p></div>{canEdit && <ActionDialog label="Editar gasto" title="Editar gasto" variant="primary"><form className="stack" action={updateExpense.bind(null, id)}>
         <div className="form-grid">
           <label>Nombre<input name="name" defaultValue={expense.name} required /></label>
-          <label>Categoría<input name="category" list="expense-categories" defaultValue={expense.category} required /><datalist id="expense-categories">{general.expenseCategories.map(category=><option key={category} value={category}/>)}</datalist></label>
+          <label>Categoría<CategoryInput categories={general.expenseCategories} defaultValue={expense.category}/></label>
           <label>Importe<MoneyInput name="amount"    defaultValue={expense.amount.toString()} required /></label>
           <label>Periodicidad<select name="periodicity" defaultValue={expense.periodicity || ""}><option value="">Único</option><option value="MONTHLY">Mensual</option><option value="QUARTERLY">Trimestral</option><option value="YEARLY">Anual</option></select></label>
           <label>Próximo vencimiento<DatePicker name="nextDueAt" type="date" defaultValue={expense.nextDueAt ? bogotaDay(expense.nextDueAt) : ""} /></label>

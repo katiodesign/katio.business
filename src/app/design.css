@@ -52,6 +52,13 @@ body { font-optical-sizing: none; font-variation-settings: "opsz" 14; }
 .section-card { padding: 20px; }
 .form-card { max-width: none; padding: 20px; }
 .form-grid { gap: 16px; }
+@supports (appearance: base-select) and selector(::picker(select)) {
+  .workspace select:not([multiple]):not([size]), .dialog select:not([multiple]):not([size]) { appearance:base-select; }
+  .workspace select:not([multiple]):not([size])::picker(select), .dialog select:not([multiple]):not([size])::picker(select) { appearance:base-select; border:1px solid var(--line); border-radius:12px; background:var(--surface); box-shadow:0 8px 24px #1a1c231f; padding:4px 0; }
+  .workspace select:not([multiple]):not([size])::picker-icon, .dialog select:not([multiple]):not([size])::picker-icon { display:none; }
+  .workspace select:not([multiple]):not([size]) option, .dialog select:not([multiple]):not([size]) option { padding:10px 14px; color:var(--ink); background:var(--surface); }
+  .workspace select:not([multiple]):not([size]) option:hover, .workspace select:not([multiple]):not([size]) option:focus, .dialog select:not([multiple]):not([size]) option:hover, .dialog select:not([multiple]):not([size]) option:focus { background:var(--highlight-subtle,#eefac4); }
+}
 .table-card { padding: 16px 20px 0; }
 table { min-width: 680px; }
 th { height: 40px; font-size: 11px; font-weight: 400; }
