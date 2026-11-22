@@ -16,17 +16,7 @@ export default function AccesoInicioDeSesion() {
         </div>
       </div>
       <div className="content-stretch flex flex-[1_0_0] flex-col gap-[var(--spacing-3xl,32px)] h-full items-center justify-center min-w-px overflow-clip px-[16px] relative" data-node-id="30:27" data-name="Formulario">
-        <div className="[word-break:break-word] content-stretch flex font-dm font-medium gap-[5px] items-baseline overflow-clip relative shrink-0 whitespace-nowrap" data-node-id="30:28" data-name="wordmark">
-          <p className="leading-[var(--font-line-height-3xl,32px)] relative shrink-0 text-[color:var(--text-primary,#181b26)] text-[length:var(--font-size-3xl,24px)] tracking-[-0.3px]" data-node-id="30:29" style={{ fontVariationSettings: '"opsz" 14' }}>
-            KATIO
-          </p>
-          <p className="leading-[var(--font-line-height-3xl,32px)] relative shrink-0 text-[color:var(--brand-default,#4a72ff)] text-[length:var(--font-size-3xl,24px)] tracking-[-0.3px]" data-node-id="30:30" style={{ fontVariationSettings: '"opsz" 14' }}>
-            .
-          </p>
-          <p className="leading-[var(--font-line-height-4xl,36px)] relative shrink-0 text-[color:var(--text-tertiary,#6f768a)] text-[length:var(--font-size-4xl,28px)] tracking-[-0.4px]" data-node-id="30:31" style={{ fontVariationSettings: '"opsz" 14' }}>
-            Business
-          </p>
-        </div>
+        <div className="login-brand" aria-label="Katio Business"><img className="login-brand-light" src="/logo_app_p.svg" alt="Katio Business"/><img className="login-brand-dark" src="/logo_app_n.svg" alt="" aria-hidden="true"/></div>
         <div className="bg-[var(--bg-surface,white)] border border-[var(--border-subtle,#f0f2f5)] border-solid content-stretch flex flex-col gap-[var(--spacing-xl,20px)] items-start max-w-[440px] overflow-clip p-[var(--spacing-3xl,32px)] relative rounded-[var(--radius-2xl,24px)] shadow-[0px_4px_16px_0px_rgba(26,28,35,0.06),0px_1px_3px_0px_rgba(26,28,35,0.04)] shrink-0 w-full" data-node-id="30:32" data-name="Tarjeta de acceso">
           <div className="[word-break:break-word] content-stretch flex flex-col gap-[var(--spacing-2xs,4px)] items-start overflow-clip relative shrink-0 w-full whitespace-nowrap" data-node-id="30:33" data-name="titulo">
             <p className="font-dm font-medium leading-[var(--font-line-height-3xl,32px)] relative shrink-0 text-[color:var(--text-primary,#181b26)] text-[length:var(--font-size-3xl,24px)] tracking-[-0.3px]" data-node-id="30:34" style={{ fontVariationSettings: '"opsz" 14' }}>
@@ -70,7 +60,7 @@ export default function AccesoInicioDeSesion() {
               ¿Olvidaste tu contraseña?
             </Action>
           </div>
-          <Action className="bg-[var(--brand-hover,#3b5bcc)] content-stretch flex gap-[var(--spacing-sm,8px)] h-[44px] items-center justify-center overflow-clip px-[var(--spacing-xl,20px)] relative rounded-[var(--radius-full,9999px)] shrink-0 w-full" data-node-id="30:74" data-name="Button" label={"Iniciar sesión"} leading={"chevron"}>
+          <Action className="bg-[var(--brand-hover,#3b5bcc)] content-stretch flex gap-[var(--spacing-sm,8px)] h-[44px] items-center justify-center overflow-clip px-[var(--spacing-xl,20px)] relative rounded-[var(--radius-full,9999px)] shrink-0 w-full" data-node-id="30:74" data-name="Button" label={"Iniciar sesión"}>
             <p className="[word-break:break-word] font-dm font-medium leading-[var(--font-line-height-base,20px)] relative shrink-0 text-[color:var(--text-on-brand,white)] text-[length:var(--font-size-base,14px)] whitespace-nowrap" data-node-id="I30:74;6:6" style={{ fontVariationSettings: '"opsz" 14' }}>
               Iniciar sesión
             </p>

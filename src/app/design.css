@@ -320,3 +320,10 @@ body { font-size:16px; }
 .side-logo .side-logo-dark { display:none; }
 :root[data-theme="dark"] .side-logo .side-logo-light { display:none; }
 :root[data-theme="dark"] .side-logo .side-logo-dark { display:block; }
+
+.login-brand { display:flex; align-items:center; max-width:100%; }
+.login-brand img { display:block; width:170px; max-width:100%; height:auto; }
+.login-brand .login-brand-dark { display:none; }
+:root[data-theme="dark"] .login-brand .login-brand-light { display:none; }
+:root[data-theme="dark"] .login-brand .login-brand-dark { display:block; }
+@media (prefers-color-scheme:dark) { :root:not([data-theme]) .login-brand .login-brand-light { display:none; } :root:not([data-theme]) .login-brand .login-brand-dark { display:block; } }

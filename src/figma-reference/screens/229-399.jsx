@@ -4,15 +4,7 @@ const imgIcon = "/figma/72164b2e-6c4e-4b2d-aa2a-b6d123b75eba.svg";
 const imgIcon1 = "/figma/8e808034-9c25-40ed-aeaf-0806a7a15b7d.svg";
 export default function MovilAcceso() {
     return (<div className="bg-[var(--bg-canvas,#f9fafc)] content-stretch flex flex-col gap-[24px] items-start pb-[16px] pt-[64px] px-[16px] relative size-full" data-node-id="229:399" data-name="Móvil · Acceso">
-      <div className="[word-break:break-word] content-stretch flex font-dm font-medium items-baseline overflow-clip relative shrink-0 w-full" data-node-id="229:400" data-name="wordmark">
-        <p className="leading-[var(--font-line-height-4xl,36px)] relative shrink-0 text-[color:var(--text-primary,#181b26)] text-[length:var(--font-size-4xl,28px)] tracking-[-0.4px] whitespace-nowrap" data-node-id="229:401" style={{ fontVariationSettings: '"opsz" 14' }}>
-          KATIO
-        </p>
-        <p className="leading-[var(--font-line-height-4xl,36px)] relative shrink-0 text-[color:var(--brand-default,#4a72ff)] text-[length:var(--font-size-4xl,28px)] tracking-[-0.4px] whitespace-nowrap" data-node-id="229:402" style={{ fontVariationSettings: '"opsz" 14' }}>
-          .
-        </p>
-        <p className="leading-[var(--font-line-height-sm,16px)] relative shrink-0 text-[color:var(--text-tertiary,#6f768a)] text-[length:var(--font-size-sm,12px)] whitespace-pre" data-node-id="229:403" style={{ fontVariationSettings: '"opsz" 14' }}>{`  Business`}</p>
-      </div>
+      <div className="login-brand" aria-label="Katio Business"><img className="login-brand-light" src="/logo_app_p.svg" alt="Katio Business"/><img className="login-brand-dark" src="/logo_app_n.svg" alt="" aria-hidden="true"/></div>
       <div className="[word-break:break-word] content-stretch flex flex-col gap-[var(--spacing-2xs,4px)] items-start overflow-clip relative shrink-0 w-full" data-node-id="229:404" data-name="t">
         <p className="font-dm font-medium leading-[var(--font-line-height-3xl,32px)] relative shrink-0 text-[color:var(--text-primary,#181b26)] text-[length:var(--font-size-3xl,24px)] tracking-[-0.3px] whitespace-nowrap" data-node-id="229:405" style={{ fontVariationSettings: '"opsz" 14' }}>
           Bienvenida de nuevo
@@ -55,7 +47,7 @@ export default function MovilAcceso() {
           ¿Olvidaste tu contraseña?
         </Action>
       </div>
-      <Action className="bg-[var(--brand-hover,#3b5bcc)] content-stretch flex gap-[var(--spacing-sm,8px)] h-[44px] items-center justify-center overflow-clip px-[var(--spacing-xl,20px)] relative rounded-[var(--radius-full,9999px)] shrink-0 w-full" data-node-id="229:445" data-name="Button" label={"Iniciar sesión"} leading={"chevron"}>
+      <Action className="bg-[var(--brand-hover,#3b5bcc)] content-stretch flex gap-[var(--spacing-sm,8px)] h-[44px] items-center justify-center overflow-clip px-[var(--spacing-xl,20px)] relative rounded-[var(--radius-full,9999px)] shrink-0 w-full" data-node-id="229:445" data-name="Button" label={"Iniciar sesión"}>
         <p className="[word-break:break-word] font-dm font-medium leading-[var(--font-line-height-base,20px)] relative shrink-0 text-[color:var(--text-on-brand,white)] text-[length:var(--font-size-base,14px)] whitespace-nowrap" data-node-id="I229:445;6:6" style={{ fontVariationSettings: '"opsz" 14' }}>
           Iniciar sesión
         </p>
