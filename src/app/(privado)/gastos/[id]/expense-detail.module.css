@@ -1,0 +1,16 @@
+.layout { display:grid; grid-template-columns:minmax(0,1.4fr) minmax(0,1fr); gap:16px; align-items:start; }
+.summary { grid-column:1 / -1; }
+.summaryGrid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin-top:16px; }
+.summaryGrid > div { background:#f5f7fa; border-radius:12px; padding:16px; min-width:0; }
+.summaryGrid p { font-weight:600; margin-top:7px; overflow-wrap:anywhere; }
+.due { grid-column:2; grid-row:2; }
+.due :global(.badge) { margin-top:10px; }
+.payment { grid-column:1; grid-row:2; min-width:0; }
+.paymentForm { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; margin-top:18px; }
+.paymentForm label { min-width:0; }
+.paymentForm small { line-height:1.4; }
+.submit { grid-column:1 / -1; justify-self:start; }
+.history { grid-column:1 / -1; min-width:0; }
+.history :global(.table-card) { margin-top:12px; }
+@media(max-width:800px) { .layout { grid-template-columns:minmax(0,1fr); } .summary,.due,.payment,.history { grid-column:auto; grid-row:auto; } .summaryGrid { grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); } }
+@media(max-width:500px) { .paymentForm { grid-template-columns:minmax(0,1fr); } .submit { grid-column:auto; width:100%; } }

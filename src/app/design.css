@@ -279,3 +279,38 @@ body { font-size:16px; }
 .checklist-task > .form-actions { margin-left:auto; }
 @media (max-width:640px) { .checklist-task > .form-actions { margin-left:0; } }
 
+
+/* Filtros y tabla del editor de cotizaciones */
+.catalog-filter-row { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.catalog-category-filter { flex:1 1 190px; min-width:0; }
+.catalog-category-filter select { width:100%; }
+.catalog-filter-row .catalog-filter { padding:10px 16px; }
+.quote-items-table { overflow-x:auto; }
+.quote-items-table table { width:100%; min-width:690px; }
+.quote-items-table th, .quote-items-table td { vertical-align:middle; }
+.quote-items-table th:nth-child(3), .quote-items-table td:nth-child(3) { text-align:center; }
+.quote-items-table th:nth-child(4), .quote-items-table td:nth-child(4), .quote-items-table th:nth-child(5), .quote-items-table td:nth-child(5) { text-align:right; white-space:nowrap; }
+.quote-items-table th:last-child { text-align:right; }
+.quote-items-table .quote-line-actions { justify-content:flex-end; white-space:nowrap; }
+
+.quote-items-table .quote-line-actions .button { margin-top: 0; }
+
+.home-page #pendientes { align-self:start; min-width:0; }
+.home-page #pendientes .filter-chips { gap:8px; flex-wrap:wrap; margin:18px 0; }
+.home-page #pendientes .pending-row { background:#fff; border:1px solid #e5e9f0; border-radius:14px; padding:14px 16px; margin-bottom:10px; gap:12px; }
+.home-page #pendientes .pending-name { min-width:0; }
+.home-page #pendientes .pending-name strong, .home-page #pendientes .pending-name small { overflow-wrap:anywhere; }
+.home-page #pendientes .pending-row > a { font-weight:600; color:#3858ce; white-space:nowrap; }
+
+.home-page #pendientes .pending-row.due-late { border-left:4px solid #d94b42; }
+.home-page #pendientes .pending-row.due-soon { border-left:4px solid #e7a522; }
+.home-page #pendientes .pending-row.due-later { border-left:4px solid #45a66b; }
+.home-page #pendientes .pending-row.due-neutral { border-left:4px solid #aab3c2; }
+.due-label { border-radius:999px; padding:5px 9px; font-size:12px; font-weight:600; white-space:nowrap; }
+.due-label-late { background:#fbe9e8; color:#a43228; }
+.due-label-soon { background:#fff3d7; color:#855600; }
+.due-label-later { background:#e3f5e9; color:#247440; }
+.due-label-neutral { background:#f0f2f6; color:#596174; }
+.home-page #pendientes time { color:#6f768a; font-size:12px; }
+
+.credential-actions .credential-tools { display:flex; align-items:center; gap:8px; margin-left:auto; }

@@ -1,8 +1,9 @@
+import RowActions from "@/components/row-actions";
 import { PageHeader } from "@/components/app-chrome";
 import Link from "next/link";
 import FilterDialog from "@/components/filter-dialog";
 import { bogotaRange } from "@/lib/date-range";
-import { Search, Plus, MoreHorizontal } from "lucide-react";
+import { Search, Plus } from "lucide-react";
 import { requirePermission } from "@/lib/access";
 import { canAccess } from "@/lib/permissions";
 import { db } from "@/lib/db";
@@ -41,7 +42,7 @@ export default async function Quotes({ searchParams }: { searchParams: Promise<{
     <div className="card table-card quote-table"><table aria-label="Cotizaciones"><thead><tr><th>Consecutivo</th><th>Cliente / prospecto</th><th>Fecha</th><th>Vence oferta</th><th>Total</th><th>Estado</th>{(canCreate || canDelete) && <th>Acciones</th>}</tr></thead><tbody>
       {rows.map(row => <tr key={row.id}><td><small>Consecutivo</small><Link href={`/cotizaciones/${row.id}`}>COT-{String(row.number).padStart(4, "0")}</Link></td><td><small>Cliente / prospecto</small><div className="quote-customer"><span className="avatar">{row.customerName.trim().split(/\s+/).slice(0,2).map(part=>part[0]).join("").toUpperCase()}</span><span>{row.customerName}<small>{row.clientId?"Cliente":"Prospecto"}</small></span></div></td><td><small>Fecha</small>{date(row.issuedAt)}</td><td><small>Vence oferta</small>{row.expiresAt?date(row.expiresAt):"—"}</td><td><small>Total (COP)</small>{cop(row.total.toString())}</td><td><small>Estado</small><span className={`badge ${row.status === "ACCEPTED" ? "success" : row.status === "SENT" ? "info" : row.status === "EXPIRED" ? "warning" : row.status === "REJECTED" ? "danger" : ""}`}>{labels[row.status]}</span></td>{(canCreate || canDelete) && <td><small>Acciones</small><div className="form-actions" style={{ marginTop: 0 }}>
         {canCreate && <DuplicateQuoteButton id={row.id} number={row.number} />}
-        <details className="row-actions"><summary role="button" className="row-icon" aria-label={`Acciones de COT-${String(row.number).padStart(4,"0")}`} title="Acciones"><MoreHorizontal size={20}/></summary><div className="row-actions-menu"><Link href={`/cotizaciones/${row.id}`}>Ver</Link>{row.status==="DRAFT"&&!row.convertedAt&&!row.paidAt&&canAccess(roles,"quotes.update")&&<Link href={`/cotizaciones/${row.id}/editar`}>Editar</Link>}{canAccess(roles,"quotes.update")&&<Link href={`/cotizaciones/${row.id}`}>Cambiar estado</Link>}{row.status==="ACCEPTED"&&canAccess(roles,"finance.create")&&canAccess(roles,"invoices.create")&&<Link href={`/cotizaciones/${row.id}`}>Concretar</Link>}{canDelete && !row.convertedAt && !row.paidAt && !row.invoice && <DeleteQuoteButton id={row.id} number={row.number} />}</div></details>
+        <RowActions label={`Acciones de COT-${String(row.number).padStart(4,"0")}`} ><Link href={`/cotizaciones/${row.id}`}>Ver</Link>{row.status==="DRAFT"&&!row.convertedAt&&!row.paidAt&&canAccess(roles,"quotes.update")&&<Link href={`/cotizaciones/${row.id}/editar`}>Editar</Link>}{canAccess(roles,"quotes.update")&&<Link href={`/cotizaciones/${row.id}`}>Cambiar estado</Link>}{row.status==="ACCEPTED"&&canAccess(roles,"finance.create")&&canAccess(roles,"invoices.create")&&<Link href={`/cotizaciones/${row.id}`}>Concretar</Link>}{canDelete && !row.convertedAt && !row.paidAt && !row.invoice && <DeleteQuoteButton id={row.id} number={row.number} />}</RowActions>
       </div></td>}</tr>)}
     </tbody></table>{!rows.length && <p className="empty" style={{ padding: 24 }}>No hay cotizaciones para estos filtros.</p>}<TablePager page={page} total={total} base="/cotizaciones" filters={{ q, status: status || "",number:params.number||"",from:params.from||"",to:params.to||"" }} /></div>
   </>;

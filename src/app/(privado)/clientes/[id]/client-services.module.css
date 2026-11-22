@@ -1,0 +1,27 @@
+.services { min-width:0; align-self:start; }
+.heading p { margin-top:6px; color:#6f768a; font-size:13px; }
+.group { margin-top:22px; }
+.services .groupTitle { display:flex; align-items:center; gap:8px; margin-bottom:10px; }
+.services .groupTitle h4 { margin:0; font-size:14px; }
+.groupTitle span { padding:3px 8px; border-radius:999px; background:#f0f2f6; color:#596174; font-size:12px; }
+.item { padding:16px; margin-top:10px; border:1px solid #e5e9f0; border-radius:14px; background:#fafbfc; }
+.itemTop { display:flex; align-items:center; gap:10px; }
+.itemTop > strong { flex:1; min-width:0; overflow-wrap:anywhere; }
+.icon { width:36px; height:36px; display:grid; place-items:center; flex:none; border-radius:10px; background:#eaf0ff; color:#3858ce; }
+.meta { display:flex; flex-wrap:wrap; gap:8px 20px; margin:14px 0; color:#6f768a; font-size:12px; }
+.meta span { display:flex; flex-direction:column; gap:3px; }
+.meta strong { color:#252d42; font-size:13px; font-weight:500; }
+.itemLink { display:inline-flex; align-items:center; gap:6px; color:#3858ce; font-size:13px; font-weight:600; }
+.empty { color:#6f768a; padding:12px 0; font-size:13px; }
+@media(max-width:500px) { .itemTop { flex-wrap:wrap; } .itemTop > strong { flex-basis:calc(100% - 50px); } .itemTop > :last-child { margin-left:46px; } }
+
+.credentialHeading { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; }
+.credentialHeading p { margin-top:6px; color:#6f768a; font-size:13px; }
+.credentialHeading > span { padding:4px 9px; border-radius:999px; background:#f0f2f6; color:#596174; font-size:12px; }
+.credentialCard { margin-top:14px; padding:16px; border:1px solid #e5e9f0; border-radius:14px; background:#fafbfc; }
+.credentialIdentity { display:flex; align-items:center; gap:10px; min-width:0; }
+.credentialIdentity > div { min-width:0; overflow-wrap:anywhere; }
+.credentialIdentity p { color:#6f768a; font-size:13px; margin-top:3px; }
+.credentials :global(.credential-actions) { margin:14px 0 0; gap:8px; }
+.credentials :global(.credential-actions .button) { margin-top:0; }
+.credentials > a { margin-top:16px; }

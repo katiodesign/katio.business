@@ -1,0 +1,1 @@
+ALTER TABLE "ConfigurationTask" ADD COLUMN "notes" TEXT NOT NULL DEFAULT '';

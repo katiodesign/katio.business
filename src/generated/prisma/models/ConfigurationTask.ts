@@ -29,6 +29,7 @@ export type ConfigurationTaskMinAggregateOutputType = {
   subscriptionId: string | null
   name: string | null
   status: string | null
+  notes: string | null
 }
 
 export type ConfigurationTaskMaxAggregateOutputType = {
@@ -36,6 +37,7 @@ export type ConfigurationTaskMaxAggregateOutputType = {
   subscriptionId: string | null
   name: string | null
   status: string | null
+  notes: string | null
 }
 
 export type ConfigurationTaskCountAggregateOutputType = {
@@ -43,6 +45,7 @@ export type ConfigurationTaskCountAggregateOutputType = {
   subscriptionId: number
   name: number
   status: number
+  notes: number
   _all: number
 }
 
@@ -52,6 +55,7 @@ export type ConfigurationTaskMinAggregateInputType = {
   subscriptionId?: true
   name?: true
   status?: true
+  notes?: true
 }
 
 export type ConfigurationTaskMaxAggregateInputType = {
@@ -59,6 +63,7 @@ export type ConfigurationTaskMaxAggregateInputType = {
   subscriptionId?: true
   name?: true
   status?: true
+  notes?: true
 }
 
 export type ConfigurationTaskCountAggregateInputType = {
@@ -66,6 +71,7 @@ export type ConfigurationTaskCountAggregateInputType = {
   subscriptionId?: true
   name?: true
   status?: true
+  notes?: true
   _all?: true
 }
 
@@ -146,6 +152,7 @@ export type ConfigurationTaskGroupByOutputType = {
   subscriptionId: string
   name: string
   status: string
+  notes: string
   _count: ConfigurationTaskCountAggregateOutputType | null
   _min: ConfigurationTaskMinAggregateOutputType | null
   _max: ConfigurationTaskMaxAggregateOutputType | null
@@ -174,6 +181,7 @@ export type ConfigurationTaskWhereInput = {
   subscriptionId?: Prisma.StringFilter<"ConfigurationTask"> | string
   name?: Prisma.StringFilter<"ConfigurationTask"> | string
   status?: Prisma.StringFilter<"ConfigurationTask"> | string
+  notes?: Prisma.StringFilter<"ConfigurationTask"> | string
   subscription?: Prisma.XOR<Prisma.SubscriptionScalarRelationFilter, Prisma.SubscriptionWhereInput>
 }
 
@@ -182,6 +190,7 @@ export type ConfigurationTaskOrderByWithRelationInput = {
   subscriptionId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  notes?: Prisma.SortOrder
   subscription?: Prisma.SubscriptionOrderByWithRelationInput
 }
 
@@ -193,6 +202,7 @@ export type ConfigurationTaskWhereUniqueInput = Prisma.AtLeast<{
   subscriptionId?: Prisma.StringFilter<"ConfigurationTask"> | string
   name?: Prisma.StringFilter<"ConfigurationTask"> | string
   status?: Prisma.StringFilter<"ConfigurationTask"> | string
+  notes?: Prisma.StringFilter<"ConfigurationTask"> | string
   subscription?: Prisma.XOR<Prisma.SubscriptionScalarRelationFilter, Prisma.SubscriptionWhereInput>
 }, "id">
 
@@ -201,6 +211,7 @@ export type ConfigurationTaskOrderByWithAggregationInput = {
   subscriptionId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  notes?: Prisma.SortOrder
   _count?: Prisma.ConfigurationTaskCountOrderByAggregateInput
   _max?: Prisma.ConfigurationTaskMaxOrderByAggregateInput
   _min?: Prisma.ConfigurationTaskMinOrderByAggregateInput
@@ -214,12 +225,14 @@ export type ConfigurationTaskScalarWhereWithAggregatesInput = {
   subscriptionId?: Prisma.StringWithAggregatesFilter<"ConfigurationTask"> | string
   name?: Prisma.StringWithAggregatesFilter<"ConfigurationTask"> | string
   status?: Prisma.StringWithAggregatesFilter<"ConfigurationTask"> | string
+  notes?: Prisma.StringWithAggregatesFilter<"ConfigurationTask"> | string
 }
 
 export type ConfigurationTaskCreateInput = {
   id?: string
   name: string
   status?: string
+  notes?: string
   subscription: Prisma.SubscriptionCreateNestedOneWithoutTasksInput
 }
 
@@ -228,12 +241,14 @@ export type ConfigurationTaskUncheckedCreateInput = {
   subscriptionId: string
   name: string
   status?: string
+  notes?: string
 }
 
 export type ConfigurationTaskUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.StringFieldUpdateOperationsInput | string
   subscription?: Prisma.SubscriptionUpdateOneRequiredWithoutTasksNestedInput
 }
 
@@ -242,6 +257,7 @@ export type ConfigurationTaskUncheckedUpdateInput = {
   subscriptionId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type ConfigurationTaskCreateManyInput = {
@@ -249,12 +265,14 @@ export type ConfigurationTaskCreateManyInput = {
   subscriptionId: string
   name: string
   status?: string
+  notes?: string
 }
 
 export type ConfigurationTaskUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type ConfigurationTaskUncheckedUpdateManyInput = {
@@ -262,6 +280,7 @@ export type ConfigurationTaskUncheckedUpdateManyInput = {
   subscriptionId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type ConfigurationTaskListRelationFilter = {
@@ -279,6 +298,7 @@ export type ConfigurationTaskCountOrderByAggregateInput = {
   subscriptionId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  notes?: Prisma.SortOrder
 }
 
 export type ConfigurationTaskMaxOrderByAggregateInput = {
@@ -286,6 +306,7 @@ export type ConfigurationTaskMaxOrderByAggregateInput = {
   subscriptionId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  notes?: Prisma.SortOrder
 }
 
 export type ConfigurationTaskMinOrderByAggregateInput = {
@@ -293,6 +314,7 @@ export type ConfigurationTaskMinOrderByAggregateInput = {
   subscriptionId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  notes?: Prisma.SortOrder
 }
 
 export type ConfigurationTaskCreateNestedManyWithoutSubscriptionInput = {
@@ -341,12 +363,14 @@ export type ConfigurationTaskCreateWithoutSubscriptionInput = {
   id?: string
   name: string
   status?: string
+  notes?: string
 }
 
 export type ConfigurationTaskUncheckedCreateWithoutSubscriptionInput = {
   id?: string
   name: string
   status?: string
+  notes?: string
 }
 
 export type ConfigurationTaskCreateOrConnectWithoutSubscriptionInput = {
@@ -383,30 +407,35 @@ export type ConfigurationTaskScalarWhereInput = {
   subscriptionId?: Prisma.StringFilter<"ConfigurationTask"> | string
   name?: Prisma.StringFilter<"ConfigurationTask"> | string
   status?: Prisma.StringFilter<"ConfigurationTask"> | string
+  notes?: Prisma.StringFilter<"ConfigurationTask"> | string
 }
 
 export type ConfigurationTaskCreateManySubscriptionInput = {
   id?: string
   name: string
   status?: string
+  notes?: string
 }
 
 export type ConfigurationTaskUpdateWithoutSubscriptionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type ConfigurationTaskUncheckedUpdateWithoutSubscriptionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type ConfigurationTaskUncheckedUpdateManyWithoutSubscriptionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 
@@ -416,6 +445,7 @@ export type ConfigurationTaskSelect<ExtArgs extends runtime.Types.Extensions.Int
   subscriptionId?: boolean
   name?: boolean
   status?: boolean
+  notes?: boolean
   subscription?: boolean | Prisma.SubscriptionDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["configurationTask"]>
 
@@ -424,6 +454,7 @@ export type ConfigurationTaskSelectCreateManyAndReturn<ExtArgs extends runtime.T
   subscriptionId?: boolean
   name?: boolean
   status?: boolean
+  notes?: boolean
   subscription?: boolean | Prisma.SubscriptionDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["configurationTask"]>
 
@@ -432,6 +463,7 @@ export type ConfigurationTaskSelectUpdateManyAndReturn<ExtArgs extends runtime.T
   subscriptionId?: boolean
   name?: boolean
   status?: boolean
+  notes?: boolean
   subscription?: boolean | Prisma.SubscriptionDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["configurationTask"]>
 
@@ -440,9 +472,10 @@ export type ConfigurationTaskSelectScalar = {
   subscriptionId?: boolean
   name?: boolean
   status?: boolean
+  notes?: boolean
 }
 
-export type ConfigurationTaskOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "subscriptionId" | "name" | "status", ExtArgs["result"]["configurationTask"]>
+export type ConfigurationTaskOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "subscriptionId" | "name" | "status" | "notes", ExtArgs["result"]["configurationTask"]>
 export type ConfigurationTaskInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   subscription?: boolean | Prisma.SubscriptionDefaultArgs<ExtArgs>
 }
@@ -463,6 +496,7 @@ export type $ConfigurationTaskPayload<ExtArgs extends runtime.Types.Extensions.I
     subscriptionId: string
     name: string
     status: string
+    notes: string
   }, ExtArgs["result"]["configurationTask"]>
   composites: {}
 }
@@ -891,6 +925,7 @@ export interface ConfigurationTaskFieldRefs {
   readonly subscriptionId: Prisma.FieldRef<"ConfigurationTask", 'String'>
   readonly name: Prisma.FieldRef<"ConfigurationTask", 'String'>
   readonly status: Prisma.FieldRef<"ConfigurationTask", 'String'>
+  readonly notes: Prisma.FieldRef<"ConfigurationTask", 'String'>
 }
     
 

@@ -142,6 +142,8 @@ model CatalogItem {
   periodicity  Periodicity?
   price        Decimal      @db.Decimal(18, 2)
   internalCost Decimal      @default(0) @db.Decimal(18, 2)
+  pricingHours Decimal?     @db.Decimal(12, 1)
+  pricingDirectCost Decimal? @db.Decimal(18, 2)
   isBundle     Boolean      @default(false)
   active       Boolean      @default(true)
   components   CatalogBundleComponent[] @relation("Bundle")
@@ -223,8 +225,10 @@ model Invoice {
   status           String       @default("ISSUED")
   voidedAt         DateTime?
   voidReason       String?
-  quoteId          String       @unique
-  quote            Quote        @relation(fields: [quoteId], references: [id])
+  quoteId          String?      @unique
+  quote            Quote?       @relation(fields: [quoteId], references: [id])
+  subscriptionEventId String?    @unique
+  subscriptionEvent SubscriptionEvent? @relation(fields: [subscriptionEventId], references: [id])
   customerSnapshot Json
   templateSnapshot Json
   total            Decimal      @db.Decimal(18, 2)
@@ -290,6 +294,7 @@ model SubscriptionEvent {
   kind           String
   data           Json?
   createdAt      DateTime @default(now())
+  invoice        Invoice?
 }
 
 model ConfigurationTask {
@@ -298,6 +303,7 @@ model ConfigurationTask {
   subscription   Subscription @relation(fields: [subscriptionId], references: [id])
   name           String
   status         String @default("PENDING")
+  notes          String @default("")
 }
 
 model Credential {

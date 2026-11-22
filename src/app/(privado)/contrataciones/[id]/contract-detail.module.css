@@ -1,0 +1,58 @@
+.sectionHeading { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+.sectionHeading p { color:#6f768a; font-size:13px; margin-top:6px; }
+.summaryGrid { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; margin-top:20px; }
+.summaryGrid > div { padding:14px; background:#f6f7fa; border-radius:12px; min-width:0; }
+.summaryGrid p { font-weight:600; margin-top:6px; overflow-wrap:anywhere; }
+.statusForm { display:flex; align-items:end; gap:10px; flex-wrap:wrap; margin-top:20px; }
+.statusForm label { min-width:210px; }
+.statusForm .button { margin-top:0; }
+.progress { background:#edf1ff; color:#3858ce; padding:6px 10px; border-radius:999px; font-size:12px; font-weight:600; }
+.progressTrack { height:7px; border-radius:999px; background:#e8ebf2; margin:16px 0 18px; overflow:hidden; }
+.progressTrack span { display:block; height:100%; background:#3858ce; border-radius:inherit; }
+.problem { color:#b02b21; font-size:13px; margin:10px 0; }
+.checklist :global(.checklist-task) { border-radius:12px; margin:12px 0; }
+.taskTitle { display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; }
+
+.renewInfo { display:grid; gap:5px; background:#f2f4f8; padding:14px 16px; border-radius:12px; }
+.renewInfo span { color:#6f768a; font-size:13px; }
+.renewInfo strong { font-size:20px; }
+
+.checklist :global(.checklist-task) { display:block; padding:16px; background:#fff; border:1px solid #e5e9f0; }
+.taskTitle { width:100%; align-items:flex-start; }
+.taskTitle strong { flex:1 1 180px; overflow-wrap:anywhere; line-height:1.4; }
+.taskControls { display:flex; justify-content:space-between; align-items:end; gap:12px; flex-wrap:wrap; margin-top:16px; }
+.taskForm { display:flex; align-items:end; gap:8px; flex-wrap:wrap; }
+.taskForm label { min-width:150px; }
+.taskActions { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.taskControls :global(.button) { margin-top:0; }
+@media (max-width:640px) { .taskControls { align-items:stretch; } .taskForm, .taskActions { width:100%; } .taskForm label { flex:1; } }
+
+.taskIcons { display:flex; gap:6px; }
+.taskIcons :global(.icon-button) { width:36px; height:36px; }
+.taskControls { justify-content:flex-start; }
+.taskControls label { min-width:180px; }
+.taskControls select.configured { background-color:#e3f5e9; color:#247440; }
+.taskControls select.hasProblem { background-color:#fbe9e8; color:#a43228; }
+.taskControls select.pending { background-color:#fff5dd; color:#856007; }
+.taskFeedback { font-size:12px; color:#6f768a; }
+.taskNotes { margin-top:14px; padding:12px; background:#f6f7fa; border-radius:10px; font-size:13px; }
+.taskNotes strong { font-size:12px; }
+.taskNotes p { margin-top:5px; white-space:pre-wrap; overflow-wrap:anywhere; }
+
+.paymentHistory { margin-top:20px; }
+.paymentList { display:grid; gap:10px; margin-top:18px; }
+.paymentEntry { display:flex; justify-content:space-between; align-items:flex-start; gap:16px; padding:14px 16px; border:1px solid #e5e9f0; border-radius:12px; }
+.paymentEntry > div:first-child { display:grid; gap:5px; min-width:0; }
+.paymentEntry small { color:#6f768a; line-height:1.4; }
+.paymentValue { display:grid; justify-items:end; gap:8px; flex:none; }
+@media(max-width:500px) { .paymentEntry { flex-wrap:wrap; } .paymentValue { justify-items:start; } }
+
+.paymentList { gap:12px; }
+.paymentEntry { display:grid; grid-template-columns:42px minmax(0,1fr) auto; align-items:start; gap:14px; padding:18px; background:#fafbfc; border-color:#e9ecf2; border-radius:14px; }
+.paymentIcon { width:42px; height:42px; display:grid; place-items:center; border-radius:12px; background:#eaf0ff; color:#3858ce; }
+.paymentEntry .paymentMain { display:grid; gap:6px; min-width:0; }
+.paymentMain > strong { font-size:14px; }
+.paymentValue { align-content:start; min-width:130px; }
+.paymentValue > strong { font-size:17px; color:#172033; }
+.paymentValue :global(.button) { margin-top:2px; }
+@media(max-width:600px) { .paymentEntry { grid-template-columns:36px minmax(0,1fr); padding:14px; } .paymentIcon { width:36px; height:36px; } .paymentValue { grid-column:2; justify-items:start; min-width:0; } }

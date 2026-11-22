@@ -14,7 +14,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
     customer: invoice.customerSnapshot as SnapshotCustomer,
     template: invoice.templateSnapshot as Record<string, string>,
     lines: invoice.lines.map(line => line.snapshot as SnapshotLine),
-    subtotal: invoice.quote.subtotal.toString(), multiplier: invoice.quote.multiplier.toString(), discount: invoice.quote.discount.toString(), discountType: invoice.quote.discountType, total: invoice.total.toString(), observations: invoice.quote.observations, extraTerms: invoice.quote.terms,
+    subtotal: invoice.quote?.subtotal.toString() ?? invoice.total.toString(), multiplier: invoice.quote?.multiplier.toString() ?? "1", discount: invoice.quote?.discount.toString() ?? "0", discountType: invoice.quote?.discountType ?? "FIXED", total: invoice.total.toString(), observations: invoice.quote?.observations ?? "", extraTerms: invoice.quote?.terms ?? "",
   });
   return new Response(new Uint8Array(pdf), { headers: { "Content-Type": "application/pdf", "Content-Disposition": `attachment; filename="FAC-${String(invoice.number).padStart(4, "0")}.pdf"`, "Cache-Control": "private, no-store" } });
 }

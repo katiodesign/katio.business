@@ -1,4 +1,5 @@
 "use server";
+import { catalogPricingInputsSchema } from "@/lib/schemas";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import { requirePermission } from "@/lib/access";
@@ -19,8 +20,8 @@ export async function createClient(form: FormData) {
   redirect("/clientes");
 }
 export async function createCatalogItem(form: FormData) {
-  const user = await requirePermission("catalog.create"); const raw = Object.fromEntries(form); if (!canAccess(user.roles.map(r => r.role), "finance.read")) raw.internalCost = "0"; const data = catalogSchema.parse(raw);
-  await db.$transaction(async (tx) => { const c = await tx.catalogItem.create({ data: { ...data, periodicity: data.contractType === "RECURRING" ? data.periodicity || null : null } }); await tx.auditLog.create({ data: { userId: user.id, action: "CREATE", entity: "CatalogItem", entityId: c.id } }); });
+  const user = await requirePermission("catalog.create"); const raw = Object.fromEntries(form); if (!canAccess(user.roles.map(r => r.role), "finance.read")) raw.internalCost = "0"; const data = catalogSchema.parse(raw); const pricingInputs = canAccess(user.roles.map(r => r.role), "finance.read") && raw.pricingHours !== undefined ? catalogPricingInputsSchema.parse(raw) : null;
+  await db.$transaction(async (tx) => { const c = await tx.catalogItem.create({ data: { ...data, ...(pricingInputs || {}), periodicity: data.contractType === "RECURRING" ? data.periodicity || null : null } }); await tx.auditLog.create({ data: { userId: user.id, action: "CREATE", entity: "CatalogItem", entityId: c.id } }); });
   redirect("/catalogo");
 }
 export async function createQuote(form: FormData) {

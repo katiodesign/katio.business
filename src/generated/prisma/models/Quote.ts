@@ -865,6 +865,11 @@ export type QuoteScalarRelationFilter = {
   isNot?: Prisma.QuoteWhereInput
 }
 
+export type QuoteNullableScalarRelationFilter = {
+  is?: Prisma.QuoteWhereInput | null
+  isNot?: Prisma.QuoteWhereInput | null
+}
+
 export type QuoteCreateNestedManyWithoutClientInput = {
   create?: Prisma.XOR<Prisma.QuoteCreateWithoutClientInput, Prisma.QuoteUncheckedCreateWithoutClientInput> | Prisma.QuoteCreateWithoutClientInput[] | Prisma.QuoteUncheckedCreateWithoutClientInput[]
   connectOrCreate?: Prisma.QuoteCreateOrConnectWithoutClientInput | Prisma.QuoteCreateOrConnectWithoutClientInput[]
@@ -945,10 +950,12 @@ export type QuoteCreateNestedOneWithoutInvoiceInput = {
   connect?: Prisma.QuoteWhereUniqueInput
 }
 
-export type QuoteUpdateOneRequiredWithoutInvoiceNestedInput = {
+export type QuoteUpdateOneWithoutInvoiceNestedInput = {
   create?: Prisma.XOR<Prisma.QuoteCreateWithoutInvoiceInput, Prisma.QuoteUncheckedCreateWithoutInvoiceInput>
   connectOrCreate?: Prisma.QuoteCreateOrConnectWithoutInvoiceInput
   upsert?: Prisma.QuoteUpsertWithoutInvoiceInput
+  disconnect?: Prisma.QuoteWhereInput | boolean
+  delete?: Prisma.QuoteWhereInput | boolean
   connect?: Prisma.QuoteWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.QuoteUpdateToOneWithWhereWithoutInvoiceInput, Prisma.QuoteUpdateWithoutInvoiceInput>, Prisma.QuoteUncheckedUpdateWithoutInvoiceInput>
 }

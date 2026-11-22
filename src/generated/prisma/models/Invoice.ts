@@ -43,6 +43,7 @@ export type InvoiceMinAggregateOutputType = {
   voidedAt: Date | null
   voidReason: string | null
   quoteId: string | null
+  subscriptionEventId: string | null
   total: runtime.Decimal | null
   createdAt: Date | null
 }
@@ -54,6 +55,7 @@ export type InvoiceMaxAggregateOutputType = {
   voidedAt: Date | null
   voidReason: string | null
   quoteId: string | null
+  subscriptionEventId: string | null
   total: runtime.Decimal | null
   createdAt: Date | null
 }
@@ -65,6 +67,7 @@ export type InvoiceCountAggregateOutputType = {
   voidedAt: number
   voidReason: number
   quoteId: number
+  subscriptionEventId: number
   customerSnapshot: number
   templateSnapshot: number
   total: number
@@ -90,6 +93,7 @@ export type InvoiceMinAggregateInputType = {
   voidedAt?: true
   voidReason?: true
   quoteId?: true
+  subscriptionEventId?: true
   total?: true
   createdAt?: true
 }
@@ -101,6 +105,7 @@ export type InvoiceMaxAggregateInputType = {
   voidedAt?: true
   voidReason?: true
   quoteId?: true
+  subscriptionEventId?: true
   total?: true
   createdAt?: true
 }
@@ -112,6 +117,7 @@ export type InvoiceCountAggregateInputType = {
   voidedAt?: true
   voidReason?: true
   quoteId?: true
+  subscriptionEventId?: true
   customerSnapshot?: true
   templateSnapshot?: true
   total?: true
@@ -211,7 +217,8 @@ export type InvoiceGroupByOutputType = {
   status: string
   voidedAt: Date | null
   voidReason: string | null
-  quoteId: string
+  quoteId: string | null
+  subscriptionEventId: string | null
   customerSnapshot: runtime.JsonValue
   templateSnapshot: runtime.JsonValue
   total: runtime.Decimal
@@ -247,12 +254,14 @@ export type InvoiceWhereInput = {
   status?: Prisma.StringFilter<"Invoice"> | string
   voidedAt?: Prisma.DateTimeNullableFilter<"Invoice"> | Date | string | null
   voidReason?: Prisma.StringNullableFilter<"Invoice"> | string | null
-  quoteId?: Prisma.StringFilter<"Invoice"> | string
+  quoteId?: Prisma.StringNullableFilter<"Invoice"> | string | null
+  subscriptionEventId?: Prisma.StringNullableFilter<"Invoice"> | string | null
   customerSnapshot?: Prisma.JsonFilter<"Invoice">
   templateSnapshot?: Prisma.JsonFilter<"Invoice">
   total?: Prisma.DecimalFilter<"Invoice"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFilter<"Invoice"> | Date | string
-  quote?: Prisma.XOR<Prisma.QuoteScalarRelationFilter, Prisma.QuoteWhereInput>
+  quote?: Prisma.XOR<Prisma.QuoteNullableScalarRelationFilter, Prisma.QuoteWhereInput> | null
+  subscriptionEvent?: Prisma.XOR<Prisma.SubscriptionEventNullableScalarRelationFilter, Prisma.SubscriptionEventWhereInput> | null
   lines?: Prisma.InvoiceLineListRelationFilter
 }
 
@@ -262,12 +271,14 @@ export type InvoiceOrderByWithRelationInput = {
   status?: Prisma.SortOrder
   voidedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   voidReason?: Prisma.SortOrderInput | Prisma.SortOrder
-  quoteId?: Prisma.SortOrder
+  quoteId?: Prisma.SortOrderInput | Prisma.SortOrder
+  subscriptionEventId?: Prisma.SortOrderInput | Prisma.SortOrder
   customerSnapshot?: Prisma.SortOrder
   templateSnapshot?: Prisma.SortOrder
   total?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   quote?: Prisma.QuoteOrderByWithRelationInput
+  subscriptionEvent?: Prisma.SubscriptionEventOrderByWithRelationInput
   lines?: Prisma.InvoiceLineOrderByRelationAggregateInput
 }
 
@@ -275,6 +286,7 @@ export type InvoiceWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   number?: number
   quoteId?: string
+  subscriptionEventId?: string
   AND?: Prisma.InvoiceWhereInput | Prisma.InvoiceWhereInput[]
   OR?: Prisma.InvoiceWhereInput[]
   NOT?: Prisma.InvoiceWhereInput | Prisma.InvoiceWhereInput[]
@@ -285,9 +297,10 @@ export type InvoiceWhereUniqueInput = Prisma.AtLeast<{
   templateSnapshot?: Prisma.JsonFilter<"Invoice">
   total?: Prisma.DecimalFilter<"Invoice"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFilter<"Invoice"> | Date | string
-  quote?: Prisma.XOR<Prisma.QuoteScalarRelationFilter, Prisma.QuoteWhereInput>
+  quote?: Prisma.XOR<Prisma.QuoteNullableScalarRelationFilter, Prisma.QuoteWhereInput> | null
+  subscriptionEvent?: Prisma.XOR<Prisma.SubscriptionEventNullableScalarRelationFilter, Prisma.SubscriptionEventWhereInput> | null
   lines?: Prisma.InvoiceLineListRelationFilter
-}, "id" | "number" | "quoteId">
+}, "id" | "number" | "quoteId" | "subscriptionEventId">
 
 export type InvoiceOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -295,7 +308,8 @@ export type InvoiceOrderByWithAggregationInput = {
   status?: Prisma.SortOrder
   voidedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   voidReason?: Prisma.SortOrderInput | Prisma.SortOrder
-  quoteId?: Prisma.SortOrder
+  quoteId?: Prisma.SortOrderInput | Prisma.SortOrder
+  subscriptionEventId?: Prisma.SortOrderInput | Prisma.SortOrder
   customerSnapshot?: Prisma.SortOrder
   templateSnapshot?: Prisma.SortOrder
   total?: Prisma.SortOrder
@@ -316,7 +330,8 @@ export type InvoiceScalarWhereWithAggregatesInput = {
   status?: Prisma.StringWithAggregatesFilter<"Invoice"> | string
   voidedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Invoice"> | Date | string | null
   voidReason?: Prisma.StringNullableWithAggregatesFilter<"Invoice"> | string | null
-  quoteId?: Prisma.StringWithAggregatesFilter<"Invoice"> | string
+  quoteId?: Prisma.StringNullableWithAggregatesFilter<"Invoice"> | string | null
+  subscriptionEventId?: Prisma.StringNullableWithAggregatesFilter<"Invoice"> | string | null
   customerSnapshot?: Prisma.JsonWithAggregatesFilter<"Invoice">
   templateSnapshot?: Prisma.JsonWithAggregatesFilter<"Invoice">
   total?: Prisma.DecimalWithAggregatesFilter<"Invoice"> | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -333,7 +348,8 @@ export type InvoiceCreateInput = {
   templateSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
   total: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
-  quote: Prisma.QuoteCreateNestedOneWithoutInvoiceInput
+  quote?: Prisma.QuoteCreateNestedOneWithoutInvoiceInput
+  subscriptionEvent?: Prisma.SubscriptionEventCreateNestedOneWithoutInvoiceInput
   lines?: Prisma.InvoiceLineCreateNestedManyWithoutInvoiceInput
 }
 
@@ -343,7 +359,8 @@ export type InvoiceUncheckedCreateInput = {
   status?: string
   voidedAt?: Date | string | null
   voidReason?: string | null
-  quoteId: string
+  quoteId?: string | null
+  subscriptionEventId?: string | null
   customerSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
   templateSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
   total: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -360,7 +377,8 @@ export type InvoiceUpdateInput = {
   templateSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   total?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  quote?: Prisma.QuoteUpdateOneRequiredWithoutInvoiceNestedInput
+  quote?: Prisma.QuoteUpdateOneWithoutInvoiceNestedInput
+  subscriptionEvent?: Prisma.SubscriptionEventUpdateOneWithoutInvoiceNestedInput
   lines?: Prisma.InvoiceLineUpdateManyWithoutInvoiceNestedInput
 }
 
@@ -370,7 +388,8 @@ export type InvoiceUncheckedUpdateInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   voidedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   voidReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  quoteId?: Prisma.StringFieldUpdateOperationsInput | string
+  quoteId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subscriptionEventId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   templateSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   total?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -384,7 +403,8 @@ export type InvoiceCreateManyInput = {
   status?: string
   voidedAt?: Date | string | null
   voidReason?: string | null
-  quoteId: string
+  quoteId?: string | null
+  subscriptionEventId?: string | null
   customerSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
   templateSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
   total: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -408,7 +428,8 @@ export type InvoiceUncheckedUpdateManyInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   voidedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   voidReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  quoteId?: Prisma.StringFieldUpdateOperationsInput | string
+  quoteId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subscriptionEventId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   templateSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   total?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -427,6 +448,7 @@ export type InvoiceCountOrderByAggregateInput = {
   voidedAt?: Prisma.SortOrder
   voidReason?: Prisma.SortOrder
   quoteId?: Prisma.SortOrder
+  subscriptionEventId?: Prisma.SortOrder
   customerSnapshot?: Prisma.SortOrder
   templateSnapshot?: Prisma.SortOrder
   total?: Prisma.SortOrder
@@ -445,6 +467,7 @@ export type InvoiceMaxOrderByAggregateInput = {
   voidedAt?: Prisma.SortOrder
   voidReason?: Prisma.SortOrder
   quoteId?: Prisma.SortOrder
+  subscriptionEventId?: Prisma.SortOrder
   total?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
@@ -456,6 +479,7 @@ export type InvoiceMinOrderByAggregateInput = {
   voidedAt?: Prisma.SortOrder
   voidReason?: Prisma.SortOrder
   quoteId?: Prisma.SortOrder
+  subscriptionEventId?: Prisma.SortOrder
   total?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
@@ -516,6 +540,38 @@ export type InvoiceUpdateOneRequiredWithoutLinesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.InvoiceUpdateToOneWithWhereWithoutLinesInput, Prisma.InvoiceUpdateWithoutLinesInput>, Prisma.InvoiceUncheckedUpdateWithoutLinesInput>
 }
 
+export type InvoiceCreateNestedOneWithoutSubscriptionEventInput = {
+  create?: Prisma.XOR<Prisma.InvoiceCreateWithoutSubscriptionEventInput, Prisma.InvoiceUncheckedCreateWithoutSubscriptionEventInput>
+  connectOrCreate?: Prisma.InvoiceCreateOrConnectWithoutSubscriptionEventInput
+  connect?: Prisma.InvoiceWhereUniqueInput
+}
+
+export type InvoiceUncheckedCreateNestedOneWithoutSubscriptionEventInput = {
+  create?: Prisma.XOR<Prisma.InvoiceCreateWithoutSubscriptionEventInput, Prisma.InvoiceUncheckedCreateWithoutSubscriptionEventInput>
+  connectOrCreate?: Prisma.InvoiceCreateOrConnectWithoutSubscriptionEventInput
+  connect?: Prisma.InvoiceWhereUniqueInput
+}
+
+export type InvoiceUpdateOneWithoutSubscriptionEventNestedInput = {
+  create?: Prisma.XOR<Prisma.InvoiceCreateWithoutSubscriptionEventInput, Prisma.InvoiceUncheckedCreateWithoutSubscriptionEventInput>
+  connectOrCreate?: Prisma.InvoiceCreateOrConnectWithoutSubscriptionEventInput
+  upsert?: Prisma.InvoiceUpsertWithoutSubscriptionEventInput
+  disconnect?: Prisma.InvoiceWhereInput | boolean
+  delete?: Prisma.InvoiceWhereInput | boolean
+  connect?: Prisma.InvoiceWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.InvoiceUpdateToOneWithWhereWithoutSubscriptionEventInput, Prisma.InvoiceUpdateWithoutSubscriptionEventInput>, Prisma.InvoiceUncheckedUpdateWithoutSubscriptionEventInput>
+}
+
+export type InvoiceUncheckedUpdateOneWithoutSubscriptionEventNestedInput = {
+  create?: Prisma.XOR<Prisma.InvoiceCreateWithoutSubscriptionEventInput, Prisma.InvoiceUncheckedCreateWithoutSubscriptionEventInput>
+  connectOrCreate?: Prisma.InvoiceCreateOrConnectWithoutSubscriptionEventInput
+  upsert?: Prisma.InvoiceUpsertWithoutSubscriptionEventInput
+  disconnect?: Prisma.InvoiceWhereInput | boolean
+  delete?: Prisma.InvoiceWhereInput | boolean
+  connect?: Prisma.InvoiceWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.InvoiceUpdateToOneWithWhereWithoutSubscriptionEventInput, Prisma.InvoiceUpdateWithoutSubscriptionEventInput>, Prisma.InvoiceUncheckedUpdateWithoutSubscriptionEventInput>
+}
+
 export type InvoiceCreateWithoutQuoteInput = {
   id?: string
   number?: number
@@ -526,6 +582,7 @@ export type InvoiceCreateWithoutQuoteInput = {
   templateSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
   total: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
+  subscriptionEvent?: Prisma.SubscriptionEventCreateNestedOneWithoutInvoiceInput
   lines?: Prisma.InvoiceLineCreateNestedManyWithoutInvoiceInput
 }
 
@@ -535,6 +592,7 @@ export type InvoiceUncheckedCreateWithoutQuoteInput = {
   status?: string
   voidedAt?: Date | string | null
   voidReason?: string | null
+  subscriptionEventId?: string | null
   customerSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
   templateSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
   total: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -567,6 +625,7 @@ export type InvoiceUpdateWithoutQuoteInput = {
   templateSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   total?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  subscriptionEvent?: Prisma.SubscriptionEventUpdateOneWithoutInvoiceNestedInput
   lines?: Prisma.InvoiceLineUpdateManyWithoutInvoiceNestedInput
 }
 
@@ -576,6 +635,7 @@ export type InvoiceUncheckedUpdateWithoutQuoteInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   voidedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   voidReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subscriptionEventId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   templateSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   total?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -593,7 +653,8 @@ export type InvoiceCreateWithoutLinesInput = {
   templateSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
   total: runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Date | string
-  quote: Prisma.QuoteCreateNestedOneWithoutInvoiceInput
+  quote?: Prisma.QuoteCreateNestedOneWithoutInvoiceInput
+  subscriptionEvent?: Prisma.SubscriptionEventCreateNestedOneWithoutInvoiceInput
 }
 
 export type InvoiceUncheckedCreateWithoutLinesInput = {
@@ -602,7 +663,8 @@ export type InvoiceUncheckedCreateWithoutLinesInput = {
   status?: string
   voidedAt?: Date | string | null
   voidReason?: string | null
-  quoteId: string
+  quoteId?: string | null
+  subscriptionEventId?: string | null
   customerSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
   templateSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
   total: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -634,7 +696,8 @@ export type InvoiceUpdateWithoutLinesInput = {
   templateSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   total?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  quote?: Prisma.QuoteUpdateOneRequiredWithoutInvoiceNestedInput
+  quote?: Prisma.QuoteUpdateOneWithoutInvoiceNestedInput
+  subscriptionEvent?: Prisma.SubscriptionEventUpdateOneWithoutInvoiceNestedInput
 }
 
 export type InvoiceUncheckedUpdateWithoutLinesInput = {
@@ -643,11 +706,83 @@ export type InvoiceUncheckedUpdateWithoutLinesInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   voidedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   voidReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  quoteId?: Prisma.StringFieldUpdateOperationsInput | string
+  quoteId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subscriptionEventId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   customerSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   templateSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   total?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type InvoiceCreateWithoutSubscriptionEventInput = {
+  id?: string
+  number?: number
+  status?: string
+  voidedAt?: Date | string | null
+  voidReason?: string | null
+  customerSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  templateSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  total: runtime.Decimal | runtime.DecimalJsLike | number | string
+  createdAt?: Date | string
+  quote?: Prisma.QuoteCreateNestedOneWithoutInvoiceInput
+  lines?: Prisma.InvoiceLineCreateNestedManyWithoutInvoiceInput
+}
+
+export type InvoiceUncheckedCreateWithoutSubscriptionEventInput = {
+  id?: string
+  number?: number
+  status?: string
+  voidedAt?: Date | string | null
+  voidReason?: string | null
+  quoteId?: string | null
+  customerSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  templateSnapshot: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  total: runtime.Decimal | runtime.DecimalJsLike | number | string
+  createdAt?: Date | string
+  lines?: Prisma.InvoiceLineUncheckedCreateNestedManyWithoutInvoiceInput
+}
+
+export type InvoiceCreateOrConnectWithoutSubscriptionEventInput = {
+  where: Prisma.InvoiceWhereUniqueInput
+  create: Prisma.XOR<Prisma.InvoiceCreateWithoutSubscriptionEventInput, Prisma.InvoiceUncheckedCreateWithoutSubscriptionEventInput>
+}
+
+export type InvoiceUpsertWithoutSubscriptionEventInput = {
+  update: Prisma.XOR<Prisma.InvoiceUpdateWithoutSubscriptionEventInput, Prisma.InvoiceUncheckedUpdateWithoutSubscriptionEventInput>
+  create: Prisma.XOR<Prisma.InvoiceCreateWithoutSubscriptionEventInput, Prisma.InvoiceUncheckedCreateWithoutSubscriptionEventInput>
+  where?: Prisma.InvoiceWhereInput
+}
+
+export type InvoiceUpdateToOneWithWhereWithoutSubscriptionEventInput = {
+  where?: Prisma.InvoiceWhereInput
+  data: Prisma.XOR<Prisma.InvoiceUpdateWithoutSubscriptionEventInput, Prisma.InvoiceUncheckedUpdateWithoutSubscriptionEventInput>
+}
+
+export type InvoiceUpdateWithoutSubscriptionEventInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  voidedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  voidReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customerSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  templateSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  total?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  quote?: Prisma.QuoteUpdateOneWithoutInvoiceNestedInput
+  lines?: Prisma.InvoiceLineUpdateManyWithoutInvoiceNestedInput
+}
+
+export type InvoiceUncheckedUpdateWithoutSubscriptionEventInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  number?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  voidedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  voidReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  quoteId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customerSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  templateSnapshot?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  total?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lines?: Prisma.InvoiceLineUncheckedUpdateManyWithoutInvoiceNestedInput
 }
 
 
@@ -688,11 +823,13 @@ export type InvoiceSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   voidedAt?: boolean
   voidReason?: boolean
   quoteId?: boolean
+  subscriptionEventId?: boolean
   customerSnapshot?: boolean
   templateSnapshot?: boolean
   total?: boolean
   createdAt?: boolean
-  quote?: boolean | Prisma.QuoteDefaultArgs<ExtArgs>
+  quote?: boolean | Prisma.Invoice$quoteArgs<ExtArgs>
+  subscriptionEvent?: boolean | Prisma.Invoice$subscriptionEventArgs<ExtArgs>
   lines?: boolean | Prisma.Invoice$linesArgs<ExtArgs>
   _count?: boolean | Prisma.InvoiceCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["invoice"]>
@@ -704,11 +841,13 @@ export type InvoiceSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   voidedAt?: boolean
   voidReason?: boolean
   quoteId?: boolean
+  subscriptionEventId?: boolean
   customerSnapshot?: boolean
   templateSnapshot?: boolean
   total?: boolean
   createdAt?: boolean
-  quote?: boolean | Prisma.QuoteDefaultArgs<ExtArgs>
+  quote?: boolean | Prisma.Invoice$quoteArgs<ExtArgs>
+  subscriptionEvent?: boolean | Prisma.Invoice$subscriptionEventArgs<ExtArgs>
 }, ExtArgs["result"]["invoice"]>
 
 export type InvoiceSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -718,11 +857,13 @@ export type InvoiceSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   voidedAt?: boolean
   voidReason?: boolean
   quoteId?: boolean
+  subscriptionEventId?: boolean
   customerSnapshot?: boolean
   templateSnapshot?: boolean
   total?: boolean
   createdAt?: boolean
-  quote?: boolean | Prisma.QuoteDefaultArgs<ExtArgs>
+  quote?: boolean | Prisma.Invoice$quoteArgs<ExtArgs>
+  subscriptionEvent?: boolean | Prisma.Invoice$subscriptionEventArgs<ExtArgs>
 }, ExtArgs["result"]["invoice"]>
 
 export type InvoiceSelectScalar = {
@@ -732,29 +873,34 @@ export type InvoiceSelectScalar = {
   voidedAt?: boolean
   voidReason?: boolean
   quoteId?: boolean
+  subscriptionEventId?: boolean
   customerSnapshot?: boolean
   templateSnapshot?: boolean
   total?: boolean
   createdAt?: boolean
 }
 
-export type InvoiceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "number" | "status" | "voidedAt" | "voidReason" | "quoteId" | "customerSnapshot" | "templateSnapshot" | "total" | "createdAt", ExtArgs["result"]["invoice"]>
+export type InvoiceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "number" | "status" | "voidedAt" | "voidReason" | "quoteId" | "subscriptionEventId" | "customerSnapshot" | "templateSnapshot" | "total" | "createdAt", ExtArgs["result"]["invoice"]>
 export type InvoiceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  quote?: boolean | Prisma.QuoteDefaultArgs<ExtArgs>
+  quote?: boolean | Prisma.Invoice$quoteArgs<ExtArgs>
+  subscriptionEvent?: boolean | Prisma.Invoice$subscriptionEventArgs<ExtArgs>
   lines?: boolean | Prisma.Invoice$linesArgs<ExtArgs>
   _count?: boolean | Prisma.InvoiceCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type InvoiceIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  quote?: boolean | Prisma.QuoteDefaultArgs<ExtArgs>
+  quote?: boolean | Prisma.Invoice$quoteArgs<ExtArgs>
+  subscriptionEvent?: boolean | Prisma.Invoice$subscriptionEventArgs<ExtArgs>
 }
 export type InvoiceIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  quote?: boolean | Prisma.QuoteDefaultArgs<ExtArgs>
+  quote?: boolean | Prisma.Invoice$quoteArgs<ExtArgs>
+  subscriptionEvent?: boolean | Prisma.Invoice$subscriptionEventArgs<ExtArgs>
 }
 
 export type $InvoicePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Invoice"
   objects: {
-    quote: Prisma.$QuotePayload<ExtArgs>
+    quote: Prisma.$QuotePayload<ExtArgs> | null
+    subscriptionEvent: Prisma.$SubscriptionEventPayload<ExtArgs> | null
     lines: Prisma.$InvoiceLinePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -763,7 +909,8 @@ export type $InvoicePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     status: string
     voidedAt: Date | null
     voidReason: string | null
-    quoteId: string
+    quoteId: string | null
+    subscriptionEventId: string | null
     customerSnapshot: runtime.JsonValue
     templateSnapshot: runtime.JsonValue
     total: runtime.Decimal
@@ -1162,7 +1309,8 @@ readonly fields: InvoiceFieldRefs;
  */
 export interface Prisma__InvoiceClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  quote<T extends Prisma.QuoteDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.QuoteDefaultArgs<ExtArgs>>): Prisma.Prisma__QuoteClient<runtime.Types.Result.GetResult<Prisma.$QuotePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  quote<T extends Prisma.Invoice$quoteArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Invoice$quoteArgs<ExtArgs>>): Prisma.Prisma__QuoteClient<runtime.Types.Result.GetResult<Prisma.$QuotePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  subscriptionEvent<T extends Prisma.Invoice$subscriptionEventArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Invoice$subscriptionEventArgs<ExtArgs>>): Prisma.Prisma__SubscriptionEventClient<runtime.Types.Result.GetResult<Prisma.$SubscriptionEventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   lines<T extends Prisma.Invoice$linesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Invoice$linesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InvoiceLinePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1199,6 +1347,7 @@ export interface InvoiceFieldRefs {
   readonly voidedAt: Prisma.FieldRef<"Invoice", 'DateTime'>
   readonly voidReason: Prisma.FieldRef<"Invoice", 'String'>
   readonly quoteId: Prisma.FieldRef<"Invoice", 'String'>
+  readonly subscriptionEventId: Prisma.FieldRef<"Invoice", 'String'>
   readonly customerSnapshot: Prisma.FieldRef<"Invoice", 'Json'>
   readonly templateSnapshot: Prisma.FieldRef<"Invoice", 'Json'>
   readonly total: Prisma.FieldRef<"Invoice", 'Decimal'>
@@ -1601,6 +1750,44 @@ export type InvoiceDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Limit how many Invoices to delete.
    */
   limit?: number
+}
+
+/**
+ * Invoice.quote
+ */
+export type Invoice$quoteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Quote
+   */
+  select?: Prisma.QuoteSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Quote
+   */
+  omit?: Prisma.QuoteOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.QuoteInclude<ExtArgs> | null
+  where?: Prisma.QuoteWhereInput
+}
+
+/**
+ * Invoice.subscriptionEvent
+ */
+export type Invoice$subscriptionEventArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SubscriptionEvent
+   */
+  select?: Prisma.SubscriptionEventSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SubscriptionEvent
+   */
+  omit?: Prisma.SubscriptionEventOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SubscriptionEventInclude<ExtArgs> | null
+  where?: Prisma.SubscriptionEventWhereInput
 }
 
 /**

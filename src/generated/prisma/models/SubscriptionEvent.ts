@@ -179,6 +179,7 @@ export type SubscriptionEventWhereInput = {
   data?: Prisma.JsonNullableFilter<"SubscriptionEvent">
   createdAt?: Prisma.DateTimeFilter<"SubscriptionEvent"> | Date | string
   subscription?: Prisma.XOR<Prisma.SubscriptionScalarRelationFilter, Prisma.SubscriptionWhereInput>
+  invoice?: Prisma.XOR<Prisma.InvoiceNullableScalarRelationFilter, Prisma.InvoiceWhereInput> | null
 }
 
 export type SubscriptionEventOrderByWithRelationInput = {
@@ -188,6 +189,7 @@ export type SubscriptionEventOrderByWithRelationInput = {
   data?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   subscription?: Prisma.SubscriptionOrderByWithRelationInput
+  invoice?: Prisma.InvoiceOrderByWithRelationInput
 }
 
 export type SubscriptionEventWhereUniqueInput = Prisma.AtLeast<{
@@ -200,6 +202,7 @@ export type SubscriptionEventWhereUniqueInput = Prisma.AtLeast<{
   data?: Prisma.JsonNullableFilter<"SubscriptionEvent">
   createdAt?: Prisma.DateTimeFilter<"SubscriptionEvent"> | Date | string
   subscription?: Prisma.XOR<Prisma.SubscriptionScalarRelationFilter, Prisma.SubscriptionWhereInput>
+  invoice?: Prisma.XOR<Prisma.InvoiceNullableScalarRelationFilter, Prisma.InvoiceWhereInput> | null
 }, "id">
 
 export type SubscriptionEventOrderByWithAggregationInput = {
@@ -230,6 +233,7 @@ export type SubscriptionEventCreateInput = {
   data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   subscription: Prisma.SubscriptionCreateNestedOneWithoutEventsInput
+  invoice?: Prisma.InvoiceCreateNestedOneWithoutSubscriptionEventInput
 }
 
 export type SubscriptionEventUncheckedCreateInput = {
@@ -238,6 +242,7 @@ export type SubscriptionEventUncheckedCreateInput = {
   kind: string
   data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
+  invoice?: Prisma.InvoiceUncheckedCreateNestedOneWithoutSubscriptionEventInput
 }
 
 export type SubscriptionEventUpdateInput = {
@@ -246,6 +251,7 @@ export type SubscriptionEventUpdateInput = {
   data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   subscription?: Prisma.SubscriptionUpdateOneRequiredWithoutEventsNestedInput
+  invoice?: Prisma.InvoiceUpdateOneWithoutSubscriptionEventNestedInput
 }
 
 export type SubscriptionEventUncheckedUpdateInput = {
@@ -254,6 +260,7 @@ export type SubscriptionEventUncheckedUpdateInput = {
   kind?: Prisma.StringFieldUpdateOperationsInput | string
   data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  invoice?: Prisma.InvoiceUncheckedUpdateOneWithoutSubscriptionEventNestedInput
 }
 
 export type SubscriptionEventCreateManyInput = {
@@ -277,6 +284,11 @@ export type SubscriptionEventUncheckedUpdateManyInput = {
   kind?: Prisma.StringFieldUpdateOperationsInput | string
   data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type SubscriptionEventNullableScalarRelationFilter = {
+  is?: Prisma.SubscriptionEventWhereInput | null
+  isNot?: Prisma.SubscriptionEventWhereInput | null
 }
 
 export type SubscriptionEventListRelationFilter = {
@@ -309,6 +321,22 @@ export type SubscriptionEventMinOrderByAggregateInput = {
   subscriptionId?: Prisma.SortOrder
   kind?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+}
+
+export type SubscriptionEventCreateNestedOneWithoutInvoiceInput = {
+  create?: Prisma.XOR<Prisma.SubscriptionEventCreateWithoutInvoiceInput, Prisma.SubscriptionEventUncheckedCreateWithoutInvoiceInput>
+  connectOrCreate?: Prisma.SubscriptionEventCreateOrConnectWithoutInvoiceInput
+  connect?: Prisma.SubscriptionEventWhereUniqueInput
+}
+
+export type SubscriptionEventUpdateOneWithoutInvoiceNestedInput = {
+  create?: Prisma.XOR<Prisma.SubscriptionEventCreateWithoutInvoiceInput, Prisma.SubscriptionEventUncheckedCreateWithoutInvoiceInput>
+  connectOrCreate?: Prisma.SubscriptionEventCreateOrConnectWithoutInvoiceInput
+  upsert?: Prisma.SubscriptionEventUpsertWithoutInvoiceInput
+  disconnect?: Prisma.SubscriptionEventWhereInput | boolean
+  delete?: Prisma.SubscriptionEventWhereInput | boolean
+  connect?: Prisma.SubscriptionEventWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.SubscriptionEventUpdateToOneWithWhereWithoutInvoiceInput, Prisma.SubscriptionEventUpdateWithoutInvoiceInput>, Prisma.SubscriptionEventUncheckedUpdateWithoutInvoiceInput>
 }
 
 export type SubscriptionEventCreateNestedManyWithoutSubscriptionInput = {
@@ -353,11 +381,60 @@ export type SubscriptionEventUncheckedUpdateManyWithoutSubscriptionNestedInput =
   deleteMany?: Prisma.SubscriptionEventScalarWhereInput | Prisma.SubscriptionEventScalarWhereInput[]
 }
 
+export type SubscriptionEventCreateWithoutInvoiceInput = {
+  id?: string
+  kind: string
+  data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  subscription: Prisma.SubscriptionCreateNestedOneWithoutEventsInput
+}
+
+export type SubscriptionEventUncheckedCreateWithoutInvoiceInput = {
+  id?: string
+  subscriptionId: string
+  kind: string
+  data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+}
+
+export type SubscriptionEventCreateOrConnectWithoutInvoiceInput = {
+  where: Prisma.SubscriptionEventWhereUniqueInput
+  create: Prisma.XOR<Prisma.SubscriptionEventCreateWithoutInvoiceInput, Prisma.SubscriptionEventUncheckedCreateWithoutInvoiceInput>
+}
+
+export type SubscriptionEventUpsertWithoutInvoiceInput = {
+  update: Prisma.XOR<Prisma.SubscriptionEventUpdateWithoutInvoiceInput, Prisma.SubscriptionEventUncheckedUpdateWithoutInvoiceInput>
+  create: Prisma.XOR<Prisma.SubscriptionEventCreateWithoutInvoiceInput, Prisma.SubscriptionEventUncheckedCreateWithoutInvoiceInput>
+  where?: Prisma.SubscriptionEventWhereInput
+}
+
+export type SubscriptionEventUpdateToOneWithWhereWithoutInvoiceInput = {
+  where?: Prisma.SubscriptionEventWhereInput
+  data: Prisma.XOR<Prisma.SubscriptionEventUpdateWithoutInvoiceInput, Prisma.SubscriptionEventUncheckedUpdateWithoutInvoiceInput>
+}
+
+export type SubscriptionEventUpdateWithoutInvoiceInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
+  data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  subscription?: Prisma.SubscriptionUpdateOneRequiredWithoutEventsNestedInput
+}
+
+export type SubscriptionEventUncheckedUpdateWithoutInvoiceInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  subscriptionId?: Prisma.StringFieldUpdateOperationsInput | string
+  kind?: Prisma.StringFieldUpdateOperationsInput | string
+  data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
 export type SubscriptionEventCreateWithoutSubscriptionInput = {
   id?: string
   kind: string
   data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
+  invoice?: Prisma.InvoiceCreateNestedOneWithoutSubscriptionEventInput
 }
 
 export type SubscriptionEventUncheckedCreateWithoutSubscriptionInput = {
@@ -365,6 +442,7 @@ export type SubscriptionEventUncheckedCreateWithoutSubscriptionInput = {
   kind: string
   data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
+  invoice?: Prisma.InvoiceUncheckedCreateNestedOneWithoutSubscriptionEventInput
 }
 
 export type SubscriptionEventCreateOrConnectWithoutSubscriptionInput = {
@@ -416,6 +494,7 @@ export type SubscriptionEventUpdateWithoutSubscriptionInput = {
   kind?: Prisma.StringFieldUpdateOperationsInput | string
   data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  invoice?: Prisma.InvoiceUpdateOneWithoutSubscriptionEventNestedInput
 }
 
 export type SubscriptionEventUncheckedUpdateWithoutSubscriptionInput = {
@@ -423,6 +502,7 @@ export type SubscriptionEventUncheckedUpdateWithoutSubscriptionInput = {
   kind?: Prisma.StringFieldUpdateOperationsInput | string
   data?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  invoice?: Prisma.InvoiceUncheckedUpdateOneWithoutSubscriptionEventNestedInput
 }
 
 export type SubscriptionEventUncheckedUpdateManyWithoutSubscriptionInput = {
@@ -441,6 +521,7 @@ export type SubscriptionEventSelect<ExtArgs extends runtime.Types.Extensions.Int
   data?: boolean
   createdAt?: boolean
   subscription?: boolean | Prisma.SubscriptionDefaultArgs<ExtArgs>
+  invoice?: boolean | Prisma.SubscriptionEvent$invoiceArgs<ExtArgs>
 }, ExtArgs["result"]["subscriptionEvent"]>
 
 export type SubscriptionEventSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -472,6 +553,7 @@ export type SubscriptionEventSelectScalar = {
 export type SubscriptionEventOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "subscriptionId" | "kind" | "data" | "createdAt", ExtArgs["result"]["subscriptionEvent"]>
 export type SubscriptionEventInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   subscription?: boolean | Prisma.SubscriptionDefaultArgs<ExtArgs>
+  invoice?: boolean | Prisma.SubscriptionEvent$invoiceArgs<ExtArgs>
 }
 export type SubscriptionEventIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   subscription?: boolean | Prisma.SubscriptionDefaultArgs<ExtArgs>
@@ -484,6 +566,7 @@ export type $SubscriptionEventPayload<ExtArgs extends runtime.Types.Extensions.I
   name: "SubscriptionEvent"
   objects: {
     subscription: Prisma.$SubscriptionPayload<ExtArgs>
+    invoice: Prisma.$InvoicePayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -886,6 +969,7 @@ readonly fields: SubscriptionEventFieldRefs;
 export interface Prisma__SubscriptionEventClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   subscription<T extends Prisma.SubscriptionDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SubscriptionDefaultArgs<ExtArgs>>): Prisma.Prisma__SubscriptionClient<runtime.Types.Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  invoice<T extends Prisma.SubscriptionEvent$invoiceArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SubscriptionEvent$invoiceArgs<ExtArgs>>): Prisma.Prisma__InvoiceClient<runtime.Types.Result.GetResult<Prisma.$InvoicePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1318,6 +1402,25 @@ export type SubscriptionEventDeleteManyArgs<ExtArgs extends runtime.Types.Extens
    * Limit how many SubscriptionEvents to delete.
    */
   limit?: number
+}
+
+/**
+ * SubscriptionEvent.invoice
+ */
+export type SubscriptionEvent$invoiceArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Invoice
+   */
+  select?: Prisma.InvoiceSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Invoice
+   */
+  omit?: Prisma.InvoiceOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.InvoiceInclude<ExtArgs> | null
+  where?: Prisma.InvoiceWhereInput
 }
 
 /**

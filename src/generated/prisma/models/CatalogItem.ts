@@ -29,11 +29,15 @@ export type AggregateCatalogItem = {
 export type CatalogItemAvgAggregateOutputType = {
   price: runtime.Decimal | null
   internalCost: runtime.Decimal | null
+  pricingHours: runtime.Decimal | null
+  pricingDirectCost: runtime.Decimal | null
 }
 
 export type CatalogItemSumAggregateOutputType = {
   price: runtime.Decimal | null
   internalCost: runtime.Decimal | null
+  pricingHours: runtime.Decimal | null
+  pricingDirectCost: runtime.Decimal | null
 }
 
 export type CatalogItemMinAggregateOutputType = {
@@ -45,6 +49,8 @@ export type CatalogItemMinAggregateOutputType = {
   periodicity: $Enums.Periodicity | null
   price: runtime.Decimal | null
   internalCost: runtime.Decimal | null
+  pricingHours: runtime.Decimal | null
+  pricingDirectCost: runtime.Decimal | null
   isBundle: boolean | null
   active: boolean | null
   createdAt: Date | null
@@ -60,6 +66,8 @@ export type CatalogItemMaxAggregateOutputType = {
   periodicity: $Enums.Periodicity | null
   price: runtime.Decimal | null
   internalCost: runtime.Decimal | null
+  pricingHours: runtime.Decimal | null
+  pricingDirectCost: runtime.Decimal | null
   isBundle: boolean | null
   active: boolean | null
   createdAt: Date | null
@@ -75,6 +83,8 @@ export type CatalogItemCountAggregateOutputType = {
   periodicity: number
   price: number
   internalCost: number
+  pricingHours: number
+  pricingDirectCost: number
   isBundle: number
   active: number
   createdAt: number
@@ -86,11 +96,15 @@ export type CatalogItemCountAggregateOutputType = {
 export type CatalogItemAvgAggregateInputType = {
   price?: true
   internalCost?: true
+  pricingHours?: true
+  pricingDirectCost?: true
 }
 
 export type CatalogItemSumAggregateInputType = {
   price?: true
   internalCost?: true
+  pricingHours?: true
+  pricingDirectCost?: true
 }
 
 export type CatalogItemMinAggregateInputType = {
@@ -102,6 +116,8 @@ export type CatalogItemMinAggregateInputType = {
   periodicity?: true
   price?: true
   internalCost?: true
+  pricingHours?: true
+  pricingDirectCost?: true
   isBundle?: true
   active?: true
   createdAt?: true
@@ -117,6 +133,8 @@ export type CatalogItemMaxAggregateInputType = {
   periodicity?: true
   price?: true
   internalCost?: true
+  pricingHours?: true
+  pricingDirectCost?: true
   isBundle?: true
   active?: true
   createdAt?: true
@@ -132,6 +150,8 @@ export type CatalogItemCountAggregateInputType = {
   periodicity?: true
   price?: true
   internalCost?: true
+  pricingHours?: true
+  pricingDirectCost?: true
   isBundle?: true
   active?: true
   createdAt?: true
@@ -234,6 +254,8 @@ export type CatalogItemGroupByOutputType = {
   periodicity: $Enums.Periodicity | null
   price: runtime.Decimal
   internalCost: runtime.Decimal
+  pricingHours: runtime.Decimal | null
+  pricingDirectCost: runtime.Decimal | null
   isBundle: boolean
   active: boolean
   createdAt: Date
@@ -272,6 +294,8 @@ export type CatalogItemWhereInput = {
   periodicity?: Prisma.EnumPeriodicityNullableFilter<"CatalogItem"> | $Enums.Periodicity | null
   price?: Prisma.DecimalFilter<"CatalogItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   internalCost?: Prisma.DecimalFilter<"CatalogItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  pricingHours?: Prisma.DecimalNullableFilter<"CatalogItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  pricingDirectCost?: Prisma.DecimalNullableFilter<"CatalogItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isBundle?: Prisma.BoolFilter<"CatalogItem"> | boolean
   active?: Prisma.BoolFilter<"CatalogItem"> | boolean
   createdAt?: Prisma.DateTimeFilter<"CatalogItem"> | Date | string
@@ -289,6 +313,8 @@ export type CatalogItemOrderByWithRelationInput = {
   periodicity?: Prisma.SortOrderInput | Prisma.SortOrder
   price?: Prisma.SortOrder
   internalCost?: Prisma.SortOrder
+  pricingHours?: Prisma.SortOrderInput | Prisma.SortOrder
+  pricingDirectCost?: Prisma.SortOrderInput | Prisma.SortOrder
   isBundle?: Prisma.SortOrder
   active?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -309,6 +335,8 @@ export type CatalogItemWhereUniqueInput = Prisma.AtLeast<{
   periodicity?: Prisma.EnumPeriodicityNullableFilter<"CatalogItem"> | $Enums.Periodicity | null
   price?: Prisma.DecimalFilter<"CatalogItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   internalCost?: Prisma.DecimalFilter<"CatalogItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  pricingHours?: Prisma.DecimalNullableFilter<"CatalogItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  pricingDirectCost?: Prisma.DecimalNullableFilter<"CatalogItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isBundle?: Prisma.BoolFilter<"CatalogItem"> | boolean
   active?: Prisma.BoolFilter<"CatalogItem"> | boolean
   createdAt?: Prisma.DateTimeFilter<"CatalogItem"> | Date | string
@@ -326,6 +354,8 @@ export type CatalogItemOrderByWithAggregationInput = {
   periodicity?: Prisma.SortOrderInput | Prisma.SortOrder
   price?: Prisma.SortOrder
   internalCost?: Prisma.SortOrder
+  pricingHours?: Prisma.SortOrderInput | Prisma.SortOrder
+  pricingDirectCost?: Prisma.SortOrderInput | Prisma.SortOrder
   isBundle?: Prisma.SortOrder
   active?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -349,6 +379,8 @@ export type CatalogItemScalarWhereWithAggregatesInput = {
   periodicity?: Prisma.EnumPeriodicityNullableWithAggregatesFilter<"CatalogItem"> | $Enums.Periodicity | null
   price?: Prisma.DecimalWithAggregatesFilter<"CatalogItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   internalCost?: Prisma.DecimalWithAggregatesFilter<"CatalogItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  pricingHours?: Prisma.DecimalNullableWithAggregatesFilter<"CatalogItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  pricingDirectCost?: Prisma.DecimalNullableWithAggregatesFilter<"CatalogItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isBundle?: Prisma.BoolWithAggregatesFilter<"CatalogItem"> | boolean
   active?: Prisma.BoolWithAggregatesFilter<"CatalogItem"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"CatalogItem"> | Date | string
@@ -364,6 +396,8 @@ export type CatalogItemCreateInput = {
   periodicity?: $Enums.Periodicity | null
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   internalCost?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  pricingHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  pricingDirectCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isBundle?: boolean
   active?: boolean
   createdAt?: Date | string
@@ -381,6 +415,8 @@ export type CatalogItemUncheckedCreateInput = {
   periodicity?: $Enums.Periodicity | null
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   internalCost?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  pricingHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  pricingDirectCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isBundle?: boolean
   active?: boolean
   createdAt?: Date | string
@@ -398,6 +434,8 @@ export type CatalogItemUpdateInput = {
   periodicity?: Prisma.NullableEnumPeriodicityFieldUpdateOperationsInput | $Enums.Periodicity | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   internalCost?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  pricingHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  pricingDirectCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isBundle?: Prisma.BoolFieldUpdateOperationsInput | boolean
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -415,6 +453,8 @@ export type CatalogItemUncheckedUpdateInput = {
   periodicity?: Prisma.NullableEnumPeriodicityFieldUpdateOperationsInput | $Enums.Periodicity | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   internalCost?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  pricingHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  pricingDirectCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isBundle?: Prisma.BoolFieldUpdateOperationsInput | boolean
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -432,6 +472,8 @@ export type CatalogItemCreateManyInput = {
   periodicity?: $Enums.Periodicity | null
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   internalCost?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  pricingHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  pricingDirectCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isBundle?: boolean
   active?: boolean
   createdAt?: Date | string
@@ -447,6 +489,8 @@ export type CatalogItemUpdateManyMutationInput = {
   periodicity?: Prisma.NullableEnumPeriodicityFieldUpdateOperationsInput | $Enums.Periodicity | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   internalCost?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  pricingHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  pricingDirectCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isBundle?: Prisma.BoolFieldUpdateOperationsInput | boolean
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -462,6 +506,8 @@ export type CatalogItemUncheckedUpdateManyInput = {
   periodicity?: Prisma.NullableEnumPeriodicityFieldUpdateOperationsInput | $Enums.Periodicity | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   internalCost?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  pricingHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  pricingDirectCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isBundle?: Prisma.BoolFieldUpdateOperationsInput | boolean
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -477,6 +523,8 @@ export type CatalogItemCountOrderByAggregateInput = {
   periodicity?: Prisma.SortOrder
   price?: Prisma.SortOrder
   internalCost?: Prisma.SortOrder
+  pricingHours?: Prisma.SortOrder
+  pricingDirectCost?: Prisma.SortOrder
   isBundle?: Prisma.SortOrder
   active?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -486,6 +534,8 @@ export type CatalogItemCountOrderByAggregateInput = {
 export type CatalogItemAvgOrderByAggregateInput = {
   price?: Prisma.SortOrder
   internalCost?: Prisma.SortOrder
+  pricingHours?: Prisma.SortOrder
+  pricingDirectCost?: Prisma.SortOrder
 }
 
 export type CatalogItemMaxOrderByAggregateInput = {
@@ -497,6 +547,8 @@ export type CatalogItemMaxOrderByAggregateInput = {
   periodicity?: Prisma.SortOrder
   price?: Prisma.SortOrder
   internalCost?: Prisma.SortOrder
+  pricingHours?: Prisma.SortOrder
+  pricingDirectCost?: Prisma.SortOrder
   isBundle?: Prisma.SortOrder
   active?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -512,6 +564,8 @@ export type CatalogItemMinOrderByAggregateInput = {
   periodicity?: Prisma.SortOrder
   price?: Prisma.SortOrder
   internalCost?: Prisma.SortOrder
+  pricingHours?: Prisma.SortOrder
+  pricingDirectCost?: Prisma.SortOrder
   isBundle?: Prisma.SortOrder
   active?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -521,6 +575,8 @@ export type CatalogItemMinOrderByAggregateInput = {
 export type CatalogItemSumOrderByAggregateInput = {
   price?: Prisma.SortOrder
   internalCost?: Prisma.SortOrder
+  pricingHours?: Prisma.SortOrder
+  pricingDirectCost?: Prisma.SortOrder
 }
 
 export type CatalogItemScalarRelationFilter = {
@@ -538,6 +594,14 @@ export type NullableEnumPeriodicityFieldUpdateOperationsInput = {
 
 export type DecimalFieldUpdateOperationsInput = {
   set?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  increment?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  decrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  multiply?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
+}
+
+export type NullableDecimalFieldUpdateOperationsInput = {
+  set?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   increment?: runtime.Decimal | runtime.DecimalJsLike | number | string
   decrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
   multiply?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -581,6 +645,8 @@ export type CatalogItemCreateWithoutComponentsInput = {
   periodicity?: $Enums.Periodicity | null
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   internalCost?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  pricingHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  pricingDirectCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isBundle?: boolean
   active?: boolean
   createdAt?: Date | string
@@ -597,6 +663,8 @@ export type CatalogItemUncheckedCreateWithoutComponentsInput = {
   periodicity?: $Enums.Periodicity | null
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   internalCost?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  pricingHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  pricingDirectCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isBundle?: boolean
   active?: boolean
   createdAt?: Date | string
@@ -618,6 +686,8 @@ export type CatalogItemCreateWithoutIncludedInInput = {
   periodicity?: $Enums.Periodicity | null
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   internalCost?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  pricingHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  pricingDirectCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isBundle?: boolean
   active?: boolean
   createdAt?: Date | string
@@ -634,6 +704,8 @@ export type CatalogItemUncheckedCreateWithoutIncludedInInput = {
   periodicity?: $Enums.Periodicity | null
   price: runtime.Decimal | runtime.DecimalJsLike | number | string
   internalCost?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  pricingHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  pricingDirectCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isBundle?: boolean
   active?: boolean
   createdAt?: Date | string
@@ -666,6 +738,8 @@ export type CatalogItemUpdateWithoutComponentsInput = {
   periodicity?: Prisma.NullableEnumPeriodicityFieldUpdateOperationsInput | $Enums.Periodicity | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   internalCost?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  pricingHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  pricingDirectCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isBundle?: Prisma.BoolFieldUpdateOperationsInput | boolean
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -682,6 +756,8 @@ export type CatalogItemUncheckedUpdateWithoutComponentsInput = {
   periodicity?: Prisma.NullableEnumPeriodicityFieldUpdateOperationsInput | $Enums.Periodicity | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   internalCost?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  pricingHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  pricingDirectCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isBundle?: Prisma.BoolFieldUpdateOperationsInput | boolean
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -709,6 +785,8 @@ export type CatalogItemUpdateWithoutIncludedInInput = {
   periodicity?: Prisma.NullableEnumPeriodicityFieldUpdateOperationsInput | $Enums.Periodicity | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   internalCost?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  pricingHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  pricingDirectCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isBundle?: Prisma.BoolFieldUpdateOperationsInput | boolean
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -725,6 +803,8 @@ export type CatalogItemUncheckedUpdateWithoutIncludedInInput = {
   periodicity?: Prisma.NullableEnumPeriodicityFieldUpdateOperationsInput | $Enums.Periodicity | null
   price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   internalCost?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  pricingHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  pricingDirectCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   isBundle?: Prisma.BoolFieldUpdateOperationsInput | boolean
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -781,6 +861,8 @@ export type CatalogItemSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   periodicity?: boolean
   price?: boolean
   internalCost?: boolean
+  pricingHours?: boolean
+  pricingDirectCost?: boolean
   isBundle?: boolean
   active?: boolean
   createdAt?: boolean
@@ -799,6 +881,8 @@ export type CatalogItemSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   periodicity?: boolean
   price?: boolean
   internalCost?: boolean
+  pricingHours?: boolean
+  pricingDirectCost?: boolean
   isBundle?: boolean
   active?: boolean
   createdAt?: boolean
@@ -814,6 +898,8 @@ export type CatalogItemSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   periodicity?: boolean
   price?: boolean
   internalCost?: boolean
+  pricingHours?: boolean
+  pricingDirectCost?: boolean
   isBundle?: boolean
   active?: boolean
   createdAt?: boolean
@@ -829,13 +915,15 @@ export type CatalogItemSelectScalar = {
   periodicity?: boolean
   price?: boolean
   internalCost?: boolean
+  pricingHours?: boolean
+  pricingDirectCost?: boolean
   isBundle?: boolean
   active?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type CatalogItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "category" | "contractType" | "periodicity" | "price" | "internalCost" | "isBundle" | "active" | "createdAt" | "updatedAt", ExtArgs["result"]["catalogItem"]>
+export type CatalogItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "category" | "contractType" | "periodicity" | "price" | "internalCost" | "pricingHours" | "pricingDirectCost" | "isBundle" | "active" | "createdAt" | "updatedAt", ExtArgs["result"]["catalogItem"]>
 export type CatalogItemInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   components?: boolean | Prisma.CatalogItem$componentsArgs<ExtArgs>
   includedIn?: boolean | Prisma.CatalogItem$includedInArgs<ExtArgs>
@@ -859,6 +947,8 @@ export type $CatalogItemPayload<ExtArgs extends runtime.Types.Extensions.Interna
     periodicity: $Enums.Periodicity | null
     price: runtime.Decimal
     internalCost: runtime.Decimal
+    pricingHours: runtime.Decimal | null
+    pricingDirectCost: runtime.Decimal | null
     isBundle: boolean
     active: boolean
     createdAt: Date
@@ -1296,6 +1386,8 @@ export interface CatalogItemFieldRefs {
   readonly periodicity: Prisma.FieldRef<"CatalogItem", 'Periodicity'>
   readonly price: Prisma.FieldRef<"CatalogItem", 'Decimal'>
   readonly internalCost: Prisma.FieldRef<"CatalogItem", 'Decimal'>
+  readonly pricingHours: Prisma.FieldRef<"CatalogItem", 'Decimal'>
+  readonly pricingDirectCost: Prisma.FieldRef<"CatalogItem", 'Decimal'>
   readonly isBundle: Prisma.FieldRef<"CatalogItem", 'Boolean'>
   readonly active: Prisma.FieldRef<"CatalogItem", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"CatalogItem", 'DateTime'>

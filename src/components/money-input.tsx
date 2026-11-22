@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 
+/** Displays Colombian separators while submitting the decimal value expected by the server. */
 export default function MoneyInput({name, value, defaultValue = "", onValueChange, required, placeholder}: {name?: string; value?: string; defaultValue?: string; onValueChange?: (value: string) => void; required?: boolean; placeholder?: string}) {
   const [internal, setInternal] = useState(defaultValue);
   const raw = value ?? internal;
@@ -26,4 +27,3 @@ export default function MoneyInput({name, value, defaultValue = "", onValueChang
     });
   }}/>{name && <input type="hidden" name={name} value={raw.endsWith(".") ? raw.slice(0, -1) : raw}/>}</>;
 }
-

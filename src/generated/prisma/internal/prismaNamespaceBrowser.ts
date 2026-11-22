@@ -206,6 +206,8 @@ export const CatalogItemScalarFieldEnum = {
   periodicity: 'periodicity',
   price: 'price',
   internalCost: 'internalCost',
+  pricingHours: 'pricingHours',
+  pricingDirectCost: 'pricingDirectCost',
   isBundle: 'isBundle',
   active: 'active',
   createdAt: 'createdAt',
@@ -291,6 +293,7 @@ export const InvoiceScalarFieldEnum = {
   voidedAt: 'voidedAt',
   voidReason: 'voidReason',
   quoteId: 'quoteId',
+  subscriptionEventId: 'subscriptionEventId',
   customerSnapshot: 'customerSnapshot',
   templateSnapshot: 'templateSnapshot',
   total: 'total',
@@ -369,7 +372,8 @@ export const ConfigurationTaskScalarFieldEnum = {
   id: 'id',
   subscriptionId: 'subscriptionId',
   name: 'name',
-  status: 'status'
+  status: 'status',
+  notes: 'notes'
 } as const
 
 export type ConfigurationTaskScalarFieldEnum = (typeof ConfigurationTaskScalarFieldEnum)[keyof typeof ConfigurationTaskScalarFieldEnum]
