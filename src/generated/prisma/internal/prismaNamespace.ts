@@ -2962,6 +2962,8 @@ export const CatalogItemScalarFieldEnum = {
   internalCost: 'internalCost',
   pricingHours: 'pricingHours',
   pricingDirectCost: 'pricingDirectCost',
+  pricingManual: 'pricingManual',
+  bundleFactor: 'bundleFactor',
   isBundle: 'isBundle',
   active: 'active',
   createdAt: 'createdAt',

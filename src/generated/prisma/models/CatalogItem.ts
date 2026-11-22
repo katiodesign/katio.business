@@ -31,6 +31,7 @@ export type CatalogItemAvgAggregateOutputType = {
   internalCost: runtime.Decimal | null
   pricingHours: runtime.Decimal | null
   pricingDirectCost: runtime.Decimal | null
+  bundleFactor: runtime.Decimal | null
 }
 
 export type CatalogItemSumAggregateOutputType = {
@@ -38,6 +39,7 @@ export type CatalogItemSumAggregateOutputType = {
   internalCost: runtime.Decimal | null
   pricingHours: runtime.Decimal | null
   pricingDirectCost: runtime.Decimal | null
+  bundleFactor: runtime.Decimal | null
 }
 
 export type CatalogItemMinAggregateOutputType = {
@@ -51,6 +53,8 @@ export type CatalogItemMinAggregateOutputType = {
   internalCost: runtime.Decimal | null
   pricingHours: runtime.Decimal | null
   pricingDirectCost: runtime.Decimal | null
+  pricingManual: boolean | null
+  bundleFactor: runtime.Decimal | null
   isBundle: boolean | null
   active: boolean | null
   createdAt: Date | null
@@ -68,6 +72,8 @@ export type CatalogItemMaxAggregateOutputType = {
   internalCost: runtime.Decimal | null
   pricingHours: runtime.Decimal | null
   pricingDirectCost: runtime.Decimal | null
+  pricingManual: boolean | null
+  bundleFactor: runtime.Decimal | null
   isBundle: boolean | null
   active: boolean | null
   createdAt: Date | null
@@ -85,6 +91,8 @@ export type CatalogItemCountAggregateOutputType = {
   internalCost: number
   pricingHours: number
   pricingDirectCost: number
+  pricingManual: number
+  bundleFactor: number
   isBundle: number
   active: number
   createdAt: number
@@ -98,6 +106,7 @@ export type CatalogItemAvgAggregateInputType = {
   internalCost?: true
   pricingHours?: true
   pricingDirectCost?: true
+  bundleFactor?: true
 }
 
 export type CatalogItemSumAggregateInputType = {
@@ -105,6 +114,7 @@ export type CatalogItemSumAggregateInputType = {
   internalCost?: true
   pricingHours?: true
   pricingDirectCost?: true
+  bundleFactor?: true
 }
 
 export type CatalogItemMinAggregateInputType = {
@@ -118,6 +128,8 @@ export type CatalogItemMinAggregateInputType = {
   internalCost?: true
   pricingHours?: true
   pricingDirectCost?: true
+  pricingManual?: true
+  bundleFactor?: true
   isBundle?: true
   active?: true
   createdAt?: true
@@ -135,6 +147,8 @@ export type CatalogItemMaxAggregateInputType = {
   internalCost?: true
   pricingHours?: true
   pricingDirectCost?: true
+  pricingManual?: true
+  bundleFactor?: true
   isBundle?: true
   active?: true
   createdAt?: true
@@ -152,6 +166,8 @@ export type CatalogItemCountAggregateInputType = {
   internalCost?: true
   pricingHours?: true
   pricingDirectCost?: true
+  pricingManual?: true
+  bundleFactor?: true
   isBundle?: true
   active?: true
   createdAt?: true
@@ -256,6 +272,8 @@ export type CatalogItemGroupByOutputType = {
   internalCost: runtime.Decimal
   pricingHours: runtime.Decimal | null
   pricingDirectCost: runtime.Decimal | null
+  pricingManual: boolean
+  bundleFactor: runtime.Decimal
   isBundle: boolean
   active: boolean
   createdAt: Date
@@ -296,6 +314,8 @@ export type CatalogItemWhereInput = {
   internalCost?: Prisma.DecimalFilter<"CatalogItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   pricingHours?: Prisma.DecimalNullableFilter<"CatalogItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pricingDirectCost?: Prisma.DecimalNullableFilter<"CatalogItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  pricingManual?: Prisma.BoolFilter<"CatalogItem"> | boolean
+  bundleFactor?: Prisma.DecimalFilter<"CatalogItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   isBundle?: Prisma.BoolFilter<"CatalogItem"> | boolean
   active?: Prisma.BoolFilter<"CatalogItem"> | boolean
   createdAt?: Prisma.DateTimeFilter<"CatalogItem"> | Date | string
@@ -315,6 +335,8 @@ export type CatalogItemOrderByWithRelationInput = {
   internalCost?: Prisma.SortOrder
   pricingHours?: Prisma.SortOrderInput | Prisma.SortOrder
   pricingDirectCost?: Prisma.SortOrderInput | Prisma.SortOrder
+  pricingManual?: Prisma.SortOrder
+  bundleFactor?: Prisma.SortOrder
   isBundle?: Prisma.SortOrder
   active?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -337,6 +359,8 @@ export type CatalogItemWhereUniqueInput = Prisma.AtLeast<{
   internalCost?: Prisma.DecimalFilter<"CatalogItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   pricingHours?: Prisma.DecimalNullableFilter<"CatalogItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pricingDirectCost?: Prisma.DecimalNullableFilter<"CatalogItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  pricingManual?: Prisma.BoolFilter<"CatalogItem"> | boolean
+  bundleFactor?: Prisma.DecimalFilter<"CatalogItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   isBundle?: Prisma.BoolFilter<"CatalogItem"> | boolean
   active?: Prisma.BoolFilter<"CatalogItem"> | boolean
   createdAt?: Prisma.DateTimeFilter<"CatalogItem"> | Date | string
@@ -356,6 +380,8 @@ export type CatalogItemOrderByWithAggregationInput = {
   internalCost?: Prisma.SortOrder
   pricingHours?: Prisma.SortOrderInput | Prisma.SortOrder
   pricingDirectCost?: Prisma.SortOrderInput | Prisma.SortOrder
+  pricingManual?: Prisma.SortOrder
+  bundleFactor?: Prisma.SortOrder
   isBundle?: Prisma.SortOrder
   active?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -381,6 +407,8 @@ export type CatalogItemScalarWhereWithAggregatesInput = {
   internalCost?: Prisma.DecimalWithAggregatesFilter<"CatalogItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   pricingHours?: Prisma.DecimalNullableWithAggregatesFilter<"CatalogItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pricingDirectCost?: Prisma.DecimalNullableWithAggregatesFilter<"CatalogItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  pricingManual?: Prisma.BoolWithAggregatesFilter<"CatalogItem"> | boolean
+  bundleFactor?: Prisma.DecimalWithAggregatesFilter<"CatalogItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   isBundle?: Prisma.BoolWithAggregatesFilter<"CatalogItem"> | boolean
   active?: Prisma.BoolWithAggregatesFilter<"CatalogItem"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"CatalogItem"> | Date | string
@@ -398,6 +426,8 @@ export type CatalogItemCreateInput = {
   internalCost?: runtime.Decimal | runtime.DecimalJsLike | number | string
   pricingHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pricingDirectCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  pricingManual?: boolean
+  bundleFactor?: runtime.Decimal | runtime.DecimalJsLike | number | string
   isBundle?: boolean
   active?: boolean
   createdAt?: Date | string
@@ -417,6 +447,8 @@ export type CatalogItemUncheckedCreateInput = {
   internalCost?: runtime.Decimal | runtime.DecimalJsLike | number | string
   pricingHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pricingDirectCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  pricingManual?: boolean
+  bundleFactor?: runtime.Decimal | runtime.DecimalJsLike | number | string
   isBundle?: boolean
   active?: boolean
   createdAt?: Date | string
@@ -436,6 +468,8 @@ export type CatalogItemUpdateInput = {
   internalCost?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   pricingHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pricingDirectCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  pricingManual?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bundleFactor?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   isBundle?: Prisma.BoolFieldUpdateOperationsInput | boolean
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -455,6 +489,8 @@ export type CatalogItemUncheckedUpdateInput = {
   internalCost?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   pricingHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pricingDirectCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  pricingManual?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bundleFactor?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   isBundle?: Prisma.BoolFieldUpdateOperationsInput | boolean
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -474,6 +510,8 @@ export type CatalogItemCreateManyInput = {
   internalCost?: runtime.Decimal | runtime.DecimalJsLike | number | string
   pricingHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pricingDirectCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  pricingManual?: boolean
+  bundleFactor?: runtime.Decimal | runtime.DecimalJsLike | number | string
   isBundle?: boolean
   active?: boolean
   createdAt?: Date | string
@@ -491,6 +529,8 @@ export type CatalogItemUpdateManyMutationInput = {
   internalCost?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   pricingHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pricingDirectCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  pricingManual?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bundleFactor?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   isBundle?: Prisma.BoolFieldUpdateOperationsInput | boolean
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -508,6 +548,8 @@ export type CatalogItemUncheckedUpdateManyInput = {
   internalCost?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   pricingHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pricingDirectCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  pricingManual?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bundleFactor?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   isBundle?: Prisma.BoolFieldUpdateOperationsInput | boolean
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -525,6 +567,8 @@ export type CatalogItemCountOrderByAggregateInput = {
   internalCost?: Prisma.SortOrder
   pricingHours?: Prisma.SortOrder
   pricingDirectCost?: Prisma.SortOrder
+  pricingManual?: Prisma.SortOrder
+  bundleFactor?: Prisma.SortOrder
   isBundle?: Prisma.SortOrder
   active?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -536,6 +580,7 @@ export type CatalogItemAvgOrderByAggregateInput = {
   internalCost?: Prisma.SortOrder
   pricingHours?: Prisma.SortOrder
   pricingDirectCost?: Prisma.SortOrder
+  bundleFactor?: Prisma.SortOrder
 }
 
 export type CatalogItemMaxOrderByAggregateInput = {
@@ -549,6 +594,8 @@ export type CatalogItemMaxOrderByAggregateInput = {
   internalCost?: Prisma.SortOrder
   pricingHours?: Prisma.SortOrder
   pricingDirectCost?: Prisma.SortOrder
+  pricingManual?: Prisma.SortOrder
+  bundleFactor?: Prisma.SortOrder
   isBundle?: Prisma.SortOrder
   active?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -566,6 +613,8 @@ export type CatalogItemMinOrderByAggregateInput = {
   internalCost?: Prisma.SortOrder
   pricingHours?: Prisma.SortOrder
   pricingDirectCost?: Prisma.SortOrder
+  pricingManual?: Prisma.SortOrder
+  bundleFactor?: Prisma.SortOrder
   isBundle?: Prisma.SortOrder
   active?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -577,6 +626,7 @@ export type CatalogItemSumOrderByAggregateInput = {
   internalCost?: Prisma.SortOrder
   pricingHours?: Prisma.SortOrder
   pricingDirectCost?: Prisma.SortOrder
+  bundleFactor?: Prisma.SortOrder
 }
 
 export type CatalogItemScalarRelationFilter = {
@@ -647,6 +697,8 @@ export type CatalogItemCreateWithoutComponentsInput = {
   internalCost?: runtime.Decimal | runtime.DecimalJsLike | number | string
   pricingHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pricingDirectCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  pricingManual?: boolean
+  bundleFactor?: runtime.Decimal | runtime.DecimalJsLike | number | string
   isBundle?: boolean
   active?: boolean
   createdAt?: Date | string
@@ -665,6 +717,8 @@ export type CatalogItemUncheckedCreateWithoutComponentsInput = {
   internalCost?: runtime.Decimal | runtime.DecimalJsLike | number | string
   pricingHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pricingDirectCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  pricingManual?: boolean
+  bundleFactor?: runtime.Decimal | runtime.DecimalJsLike | number | string
   isBundle?: boolean
   active?: boolean
   createdAt?: Date | string
@@ -688,6 +742,8 @@ export type CatalogItemCreateWithoutIncludedInInput = {
   internalCost?: runtime.Decimal | runtime.DecimalJsLike | number | string
   pricingHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pricingDirectCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  pricingManual?: boolean
+  bundleFactor?: runtime.Decimal | runtime.DecimalJsLike | number | string
   isBundle?: boolean
   active?: boolean
   createdAt?: Date | string
@@ -706,6 +762,8 @@ export type CatalogItemUncheckedCreateWithoutIncludedInInput = {
   internalCost?: runtime.Decimal | runtime.DecimalJsLike | number | string
   pricingHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pricingDirectCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  pricingManual?: boolean
+  bundleFactor?: runtime.Decimal | runtime.DecimalJsLike | number | string
   isBundle?: boolean
   active?: boolean
   createdAt?: Date | string
@@ -740,6 +798,8 @@ export type CatalogItemUpdateWithoutComponentsInput = {
   internalCost?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   pricingHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pricingDirectCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  pricingManual?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bundleFactor?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   isBundle?: Prisma.BoolFieldUpdateOperationsInput | boolean
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -758,6 +818,8 @@ export type CatalogItemUncheckedUpdateWithoutComponentsInput = {
   internalCost?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   pricingHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pricingDirectCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  pricingManual?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bundleFactor?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   isBundle?: Prisma.BoolFieldUpdateOperationsInput | boolean
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -787,6 +849,8 @@ export type CatalogItemUpdateWithoutIncludedInInput = {
   internalCost?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   pricingHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pricingDirectCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  pricingManual?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bundleFactor?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   isBundle?: Prisma.BoolFieldUpdateOperationsInput | boolean
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -805,6 +869,8 @@ export type CatalogItemUncheckedUpdateWithoutIncludedInInput = {
   internalCost?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   pricingHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   pricingDirectCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  pricingManual?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  bundleFactor?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   isBundle?: Prisma.BoolFieldUpdateOperationsInput | boolean
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -863,6 +929,8 @@ export type CatalogItemSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   internalCost?: boolean
   pricingHours?: boolean
   pricingDirectCost?: boolean
+  pricingManual?: boolean
+  bundleFactor?: boolean
   isBundle?: boolean
   active?: boolean
   createdAt?: boolean
@@ -883,6 +951,8 @@ export type CatalogItemSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   internalCost?: boolean
   pricingHours?: boolean
   pricingDirectCost?: boolean
+  pricingManual?: boolean
+  bundleFactor?: boolean
   isBundle?: boolean
   active?: boolean
   createdAt?: boolean
@@ -900,6 +970,8 @@ export type CatalogItemSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   internalCost?: boolean
   pricingHours?: boolean
   pricingDirectCost?: boolean
+  pricingManual?: boolean
+  bundleFactor?: boolean
   isBundle?: boolean
   active?: boolean
   createdAt?: boolean
@@ -917,13 +989,15 @@ export type CatalogItemSelectScalar = {
   internalCost?: boolean
   pricingHours?: boolean
   pricingDirectCost?: boolean
+  pricingManual?: boolean
+  bundleFactor?: boolean
   isBundle?: boolean
   active?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type CatalogItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "category" | "contractType" | "periodicity" | "price" | "internalCost" | "pricingHours" | "pricingDirectCost" | "isBundle" | "active" | "createdAt" | "updatedAt", ExtArgs["result"]["catalogItem"]>
+export type CatalogItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "category" | "contractType" | "periodicity" | "price" | "internalCost" | "pricingHours" | "pricingDirectCost" | "pricingManual" | "bundleFactor" | "isBundle" | "active" | "createdAt" | "updatedAt", ExtArgs["result"]["catalogItem"]>
 export type CatalogItemInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   components?: boolean | Prisma.CatalogItem$componentsArgs<ExtArgs>
   includedIn?: boolean | Prisma.CatalogItem$includedInArgs<ExtArgs>
@@ -949,6 +1023,8 @@ export type $CatalogItemPayload<ExtArgs extends runtime.Types.Extensions.Interna
     internalCost: runtime.Decimal
     pricingHours: runtime.Decimal | null
     pricingDirectCost: runtime.Decimal | null
+    pricingManual: boolean
+    bundleFactor: runtime.Decimal
     isBundle: boolean
     active: boolean
     createdAt: Date
@@ -1388,6 +1464,8 @@ export interface CatalogItemFieldRefs {
   readonly internalCost: Prisma.FieldRef<"CatalogItem", 'Decimal'>
   readonly pricingHours: Prisma.FieldRef<"CatalogItem", 'Decimal'>
   readonly pricingDirectCost: Prisma.FieldRef<"CatalogItem", 'Decimal'>
+  readonly pricingManual: Prisma.FieldRef<"CatalogItem", 'Boolean'>
+  readonly bundleFactor: Prisma.FieldRef<"CatalogItem", 'Decimal'>
   readonly isBundle: Prisma.FieldRef<"CatalogItem", 'Boolean'>
   readonly active: Prisma.FieldRef<"CatalogItem", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"CatalogItem", 'DateTime'>

@@ -2,12 +2,12 @@
 import { useState } from "react";
 
 /** Displays Colombian separators while submitting the decimal value expected by the server. */
-export default function MoneyInput({name, value, defaultValue = "", onValueChange, required, placeholder}: {name?: string; value?: string; defaultValue?: string; onValueChange?: (value: string) => void; required?: boolean; placeholder?: string}) {
+export default function MoneyInput({name, value, defaultValue = "", onValueChange, required, placeholder, readOnly}: {readOnly?:boolean;name?: string; value?: string; defaultValue?: string; onValueChange?: (value: string) => void; required?: boolean; placeholder?: string}) {
   const [internal, setInternal] = useState(defaultValue);
   const raw = value ?? internal;
   const [whole, fraction] = raw.split(".");
   const display = (whole || (fraction !== undefined ? "0" : "")).replace(/\B(?=(\d{3})+(?!\d))/g, ".") + (fraction !== undefined ? "," + fraction : "");
-  return <><input type="text" inputMode="decimal" value={display} required={required} placeholder={placeholder} onKeyDown={event => {
+  return <><input type="text" inputMode="decimal" value={display} required={required} readOnly={readOnly} placeholder={placeholder} onKeyDown={event => {
     const input = event.currentTarget, position = input.selectionStart;
     if (event.key === "Backspace" && position !== null && position === input.selectionEnd && position > 0 && input.value[position - 1] === ".") {
       input.setSelectionRange(Math.max(0, position - 2), position - 1);

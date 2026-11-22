@@ -21,7 +21,7 @@ export async function createClient(form: FormData) {
 }
 export async function createCatalogItem(form: FormData) {
   const user = await requirePermission("catalog.create"); const raw = Object.fromEntries(form); if (!canAccess(user.roles.map(r => r.role), "finance.read")) raw.internalCost = "0"; const data = catalogSchema.parse(raw); const pricingInputs = canAccess(user.roles.map(r => r.role), "finance.read") && raw.pricingHours !== undefined ? catalogPricingInputsSchema.parse(raw) : null;
-  await db.$transaction(async (tx) => { const c = await tx.catalogItem.create({ data: { ...data, ...(pricingInputs || {}), periodicity: data.contractType === "RECURRING" ? data.periodicity || null : null } }); await tx.auditLog.create({ data: { userId: user.id, action: "CREATE", entity: "CatalogItem", entityId: c.id } }); });
+  await db.$transaction(async (tx) => { const c = await tx.catalogItem.create({ data: { ...data, ...(pricingInputs || {}), pricingManual:pricingInputs ? form.get("pricingManual")==="on" : true, periodicity: data.contractType === "RECURRING" ? data.periodicity || null : null } }); await tx.auditLog.create({ data: { userId: user.id, action: "CREATE", entity: "CatalogItem", entityId: c.id } }); });
   redirect("/catalogo");
 }
 export async function createQuote(form: FormData) {

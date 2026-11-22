@@ -35,7 +35,7 @@ export async function confirmCatalogImport(form:FormData){
       const id=row.id,data=row;const existing=id?await tx.catalogItem.findUnique({where:{id}}):null;
       const sameName=await tx.catalogItem.findFirst({where:{name:{equals:data.name,mode:"insensitive"},category:{equals:data.category,mode:"insensitive"},...(existing?{id:{not:existing.id}}:{})}});
       if(sameName)throw new Error(`Ya existe ${data.name} en ${data.category}.`);
-      const payload={name:data.name,description:data.description,category:data.category,contractType:data.contractType,periodicity:data.contractType==="RECURRING"?data.periodicity||null:null,price:data.price,internalCost:data.internalCost,active:data.active,isBundle:data.isBundle};
+      const payload={name:data.name,description:data.description,category:data.category,contractType:data.contractType,periodicity:data.contractType==="RECURRING"?data.periodicity||null:null,price:data.price,internalCost:data.internalCost,active:data.active,isBundle:data.isBundle,pricingHours:data.pricingHours||null,pricingDirectCost:data.pricingDirectCost||null,pricingManual:data.pricingManual,bundleFactor:data.bundleFactor};
       const item=existing?await tx.catalogItem.update({where:{id},data:payload}):await tx.catalogItem.create({data:{...payload,...(id?{id}:{})}});
       resolvedIds.push(item.id);
     }

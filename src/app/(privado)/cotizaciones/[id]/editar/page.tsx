@@ -1,3 +1,4 @@
+import {refreshCatalogPrices} from "@/lib/catalog-refresh";
 import { PageHeader } from "@/components/app-chrome";
 import {notFound} from "next/navigation";
 import {db} from "@/lib/db";
@@ -7,6 +8,7 @@ import {canAccess} from "@/lib/permissions";
 import QuoteForm,{type InitialQuote} from "../../nueva/quote-form";
 export default async function EditQuote({params}:{params:Promise<{id:string}>}){
  const actor=await requirePermission("quotes.update"),roles=actor.roles.map(r=>r.role),{id}=await params;
+ if(canAccess(roles,"catalog.read"))await refreshCatalogPrices();
  const [quote,catalog,clients]=await Promise.all([db.quote.findUnique({where:{id},include:{lines:true}}),canAccess(roles,"catalog.read")?db.catalogItem.findMany({where:{active:true},include:{components:{include:{component:true}}},orderBy:{name:"asc"},take:300}):[],canAccess(roles,"clients.read")?db.client.findMany({where:{archivedAt:null},select:{id:true,name:true,identification:true,email:true,phone:true,address:true},orderBy:{name:"asc"},take:500}):[]]);
  if(!quote||quote.deletedAt||quote.status!=="DRAFT"||quote.convertedAt||quote.paidAt)notFound();
  const initial:InitialQuote={clientId:quote.clientId||"",showBreakdown:quote.showBreakdown,issuedAt:bogotaDay(quote.issuedAt),expiresAt:quote.expiresAt?bogotaDay(quote.expiresAt):"",customerName:quote.customerName,businessName:quote.businessName||"",identification:quote.identification||"",email:quote.email||"",phone:quote.phone||"",address:quote.address||"",multiplier:quote.multiplier.toString(),discountType:quote.discountType as "FIXED"|"PERCENT",discount:quote.discount.toString(),observations:quote.observations,terms:quote.terms,lines:quote.lines.map(line=>({id:line.id,commercialComponentIds:Array.isArray(line.commercialComponents)?line.commercialComponents.flatMap(part=>part&&typeof part==="object"&&!Array.isArray(part)&&typeof part.id==="string"?[part.id]:[]):[],catalogId:line.catalogId||"",name:line.name,description:line.description,contractType:line.contractType,periodicity:line.periodicity||"",quantity:line.quantity.toString(),unitPrice:line.unitPrice.toString()}))};

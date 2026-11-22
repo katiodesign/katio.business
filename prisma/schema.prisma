@@ -144,6 +144,8 @@ model CatalogItem {
   internalCost Decimal      @default(0) @db.Decimal(18, 2)
   pricingHours Decimal?     @db.Decimal(12, 1)
   pricingDirectCost Decimal? @db.Decimal(18, 2)
+  pricingManual Boolean @default(false)
+  bundleFactor Decimal @default(1) @db.Decimal(18, 8)
   isBundle     Boolean      @default(false)
   active       Boolean      @default(true)
   components   CatalogBundleComponent[] @relation("Bundle")
