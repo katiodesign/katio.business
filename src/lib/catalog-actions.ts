@@ -25,7 +25,7 @@ export async function updateCatalogItem(itemId: string, form: FormData) {
   const raw = Object.fromEntries(form); const canSeeCost = canAccess(actor.roles.map(r=>r.role),"finance.read");
   if (!canSeeCost) raw.internalCost = "0";
   const data = catalogSchema.parse(raw);
-  const pricingInputs = canSeeCost && raw.pricingHours !== undefined ? catalogPricingInputsSchema.parse(raw) : null;
+  const pricingInputs = canSeeCost && raw.pricingHours !== undefined && raw.preserveLegacyPricing !== "true" ? catalogPricingInputsSchema.parse(raw) : null;
   await db.$transaction(async tx => {
     await tx.catalogItem.update({where:{id},data:{name:data.name,description:data.description,category:data.category,contractType:data.contractType,periodicity:data.contractType==="RECURRING"?data.periodicity||null:null,price:data.price,...(canSeeCost?{internalCost:data.internalCost,...(pricingInputs || {})}:{})}});
     await tx.auditLog.create({data:{userId:actor.id,action:"UPDATE",entity:"CatalogItem",entityId:id}});
